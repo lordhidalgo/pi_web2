@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
+import Footer from "../components/layouts/footer/Footer";
+import HeaderWrapper from "../components/layouts/header/HeaderWrapper"; // 👈 usamos el wrapper
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,15 +14,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="es">
+      <body className={inter.className}>
+        <Providers>
+          <HeaderWrapper /> {/* 👈 ahora el header se oculta solo en ciertas rutas */}
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
