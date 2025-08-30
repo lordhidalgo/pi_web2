@@ -10,7 +10,7 @@ import {
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { Button } from "../../components/ui/button";
+import { Button } from "../ui/Button";
 import { useRouter } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";
 
