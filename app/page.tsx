@@ -1,103 +1,133 @@
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
+import "./Home.css"; // Asegúrate de que Home.css esté en app o uses ruta relativa correcta
+import "./globals.css";
+
+
+const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`faq-item${open ? " open" : ""}`}>
+      <button className="faq-question" onClick={() => setOpen(!open)}>
+        {question}
+        <span className="faq-arrow">{open ? "▲" : "▼"}</span>
+      </button>
+      {open && <div className="faq-answer">{answer}</div>}
+    </div>
+  );
+};
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <main className="home-container">
+        <div className="home-content">
+          <div className="text-block">
+            <h1>
+              Bienvenido a{" "}
+              <span className="brand">
+                <span className="brand-ar">AR</span>
+                <span className="brand-t">T</span>
+                <span className="brand-thea">HEA</span>
+              </span>
+            </h1>
+            <p>Explora el arte como nunca antes.</p>
+            <button className="member-btn">Hazte miembro</button>
+          </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <div className="image-block">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/img/flores-amarillas.jpg"
+              alt="Arte de flores amarillas"
+              width={300}
+              height={300}
+              className="home-image"
+              priority
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <hr />
+      <section className="home-section">
+        <h2>Crea tu portafolio artístico </h2>
+        <p>Muestra tus obras y conecta con otros artistas.</p>
+        <button className="portfolio-btn">Publica tu primera obra</button>
+      </section>
+
+      <div className="home-incentives">
+        <h2>Ayudando a la comunidad artística global</h2>
+        <div className="incentives-grid">
+          <div className="incentives-col">
+            <div className="incentive-card">
+              <h4 className="incentive1">Apoyo a artistas emergentes</h4>
+              <p>
+                ARTTHÉA es una plataforma que conecta artistas y amantes del arte de todo el mundo.
+                Únete a nosotros para compartir, descubrir y celebrar el arte.
+              </p>
+            </div>
+            <div className="incentive-card">
+              <h4 className="incentive2">Impacto social</h4>
+              <p>
+                Nuestro compromiso es apoyar a artistas emergentes y promover la diversidad cultural.
+                Creemos en el poder del arte para transformar comunidades y crear un mundo más inclusivo.
+              </p>
+            </div>
+          </div>
+          <div className="incentives-col">
+            <div className="incentive-card">
+              <h4 className="incentive3">Promoción de arte</h4>
+              <p>
+                Creemos en la importancia de dar visibilidad a los artistas y sus obras. A través de nuestras
+                iniciativas, buscamos promover el arte en todas sus formas y conectar a los creadores con un
+                público más amplio.
+              </p>
+            </div>
+            <div className="incentive-card">
+              <h4 className="incentive4">Subastas de arte</h4>
+              <p>
+                Nuestras subastas de arte ofrecen a los artistas una plataforma para vender sus obras y obtener
+                reconocimiento. Apoyamos a los creadores en cada paso del proceso.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <section className="home-frequent-questions">
+        <div className="faq-flex">
+          <div className="faq-info">
+            <div>
+              <h2>Preguntas frecuentes</h2>
+              <h5>
+                Nuestra comunidad artística es una plataforma social para artistas que desean compartir,
+                publicar y debatir sobre arte y obras creativas. Es gratuita y solo necesitas registrar tu
+                correo electrónico para crear tu perfil.
+              </h5>
+            </div>
+          </div>
+          <div className="faq-list">
+            <FAQItem
+              question="¿Cómo puedo unirme a ARTTHÉA?"
+              answer="Puedes unirte a ARTTHÉA creando una cuenta gratuita en nuestra plataforma. Una vez registrado, podrás explorar, compartir y vender tus obras de arte."
+            />
+            <FAQItem
+              question="¿Puedo vender mis obras en ARTTHÉA?"
+              answer="Sí, puedes publicar y vender tus obras de arte a través de nuestra plataforma de manera sencilla y segura."
+            />
+            <FAQItem
+              question="¿Hay algún costo para los artistas?"
+              answer="Registrarse y crear un portafolio es gratuito. Solo se aplican comisiones cuando vendes una obra."
+            />
+            <FAQItem
+              question="¿Cómo puedo participar en las subastas?"
+              answer="Para participar en las subastas, solo necesitas tener una cuenta activa y seguir las instrucciones en la sección de subastas."
+            />
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
