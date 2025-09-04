@@ -11,10 +11,10 @@ const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center p-4 sm:p-8 bg-whitesmoke border-b-2 border-b-[#bebebec5] z-50 shadow-md">
+    <header className="flex justify-between items-center p-4 sm:p-2 bg-whitesmoke border-b-2 border-b-[#bebebec5] z-50 shadow-md">
       {/* Logo a la izquierda */}
       <Link href="/" className="flex items-center justify-center cursor-pointer transition-transform duration-200 hover:scale-110">
-        <img src="/img/logo-artthea.png" alt="Logo ARTTHÉA" className="h-10 w-auto" />
+        <img src="/images/img/logo-artthea.png" alt="Logo ARTTHÉA" className="h-10 w-auto" />
       </Link>
 
       {/* Menú al centro */}

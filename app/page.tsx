@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
+import "./globals.css";
+
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -37,7 +39,7 @@ export default function Home() {
 
           <div className="flex-1 flex justify-center items-center">
             <Image
-              src="/img/flores-amarillas.jpg"
+              src="/images/img/flores-amarillas.jpg"
               alt="Arte de flores amarillas"
               width={300}
               height={300}

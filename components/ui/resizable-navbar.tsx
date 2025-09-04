@@ -73,7 +73,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
     <motion.div
       ref={ref}
       // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
-      className={cn("sticky inset-x-0 top-20 z-40 w-full", className)}
+      className={cn("sticky inset-x-0 top-5 z-40 w-full", className)}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
@@ -107,7 +107,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         minWidth: "800px",
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
+        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full border border-zinc-200 dark:border-neutral-800 bg-transparent px-4 py-2 lg:flex dark:bg-transparent", // 👈 borde fijo agregado
         visible && "bg-white/80 dark:bg-neutral-950/80",
         className,
       )}
@@ -219,33 +219,7 @@ export const MobileNavMenu = ({
     </AnimatePresence>
   );
 };
-export const SearchBar = () => {
-  const [query, setQuery] = useState("");
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Buscando:", query);
-    // Aquí pones la lógica de búsqueda (ejemplo: redirigir o filtrar resultados)
-  };
-
-  return (
-    <form
-      onSubmit={handleSearch}
-      className="flex items-center w-full max-w-md bg-gray-100 dark:bg-neutral-800 rounded-full px-4 py-2 shadow-sm"
-    >
-      <input
-        type="text"
-        placeholder="Buscar..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="flex-1 bg-transparent outline-none text-black dark:text-white placeholder-gray-500"
-      />
-      <button type="submit">
-        <IconSearch className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-      </button>
-    </form>
-  );
-};
 
 export const MobileNavToggle = ({
   isOpen,

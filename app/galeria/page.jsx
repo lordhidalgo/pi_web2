@@ -7,7 +7,7 @@ import {NavbarDemo} from "../../components/features/Navbar-demo";
 export default function HomePage() {
   return (
  <main >
-<div >
+<div className="pt-0">
   <NavbarDemo />
 </div>
 
