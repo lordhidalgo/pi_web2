@@ -58,7 +58,7 @@ export function NavbarDemo() {
                   type="text"
                   placeholder="Buscar..."
                   autoFocus
-                  className="w-80 rounded-full border border-zinc-300 bg-white/70 pl-10 pr-4 py-2 text-sm text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-white"
+                  className="w-80 rounded-full borderig border-zinc-300 bg-white/70 pl-10 pr-4 py-2 text-sm text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-white"
                   onBlur={() => setShowSearch(false)}
                 />
               </div>
@@ -95,16 +95,6 @@ export function NavbarDemo() {
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
           >
-            {navItems.map((item, idx) => (
-              <a
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300 py-2 px-4 block hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-md"
-              >
-                {item.name}
-              </a>
-            ))}
 
             <div className="relative mt-4 max-w-xs mx-auto w-full">
               <IconSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 dark:text-gray-400" />

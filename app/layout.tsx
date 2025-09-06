@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+      <html lang="es" className="light" style={{ colorScheme: "light" }}>
       <body className={inter.className}>
         <Providers>
           <HeaderWrapper /> {/* 👈 ahora el header se oculta solo en ciertas rutas */}
