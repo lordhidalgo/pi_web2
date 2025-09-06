@@ -20,7 +20,7 @@ const Header = () => {
       {/* Menú al centro */}
       <nav className={`nav md:flex md:items-center md:gap-10 ${menuOpen ? 'open' : ''} hidden`}>
         <Link href="/galeria" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Galería de arte</Link>
-        <Link href="/about" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Sobre nosotros</Link>
+        <Link href="/sobre-nosotros" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Sobre nosotros</Link>
         <Link href="#soporte" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Soporte</Link>
         <Link href="/membresias" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Membresía</Link>
       </nav>
@@ -42,7 +42,7 @@ const Header = () => {
       {menuOpen && (
         <nav className="absolute top-16 right-0 bg-white flex flex-col items-start p-4 gap-4 w-full border-t border-[#ddd] md:hidden">
           <Link href="/galeria" className="text-[#333] text-lg hover:text-[#9c7905]">Galería de arte</Link>
-          <Link href="/about" className="text-[#333] text-lg hover:text-[#9c7905]">Sobre nosotros</Link>
+          <Link href="/sobre-nosotros" className="text-[#333] text-lg hover:text-[#9c7905]">Sobre nosotros</Link>
           <Link href="#soporte" className="text-[#333] text-lg hover:text-[#9c7905]">Soporte</Link>
           <Link href="/PaginaMembresia" className="text-[#333] text-lg hover:text-[#9c7905]">Membresía</Link>
         </nav>
