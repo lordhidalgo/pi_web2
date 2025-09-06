@@ -6,8 +6,6 @@ export default function HomeMembresias() {
   return (
  <main >
   <TimelineDemo/>
-
-
 </main>
   );
 }

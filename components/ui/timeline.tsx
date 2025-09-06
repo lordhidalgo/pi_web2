@@ -6,7 +6,6 @@ import {
   motion,
 } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-
 interface TimelineEntry {
   title: string;
   content: React.ReactNode;
@@ -37,14 +36,19 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       className="w-full bg-white dark:bg-neutral-950 font-sans md:px-10"
       ref={containerRef}
     >
-      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
+    <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
         <h2 className="text-lg md:text-4xl mb-4 text-black dark:text-white max-w-4xl">
           MEMBRESIAS
         </h2>
-        <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-sm">
-        "Ofrecemos membresías exclusivas con una de las mejores ofertas del mercado, brindando beneficios únicos, acceso preferencial y experiencias personalizadas para nuestros usuarios, garantizando valor, calidad y satisfacción en cada suscripción."
+        <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-sm w-150">
+            Ofrecemos membresías exclusivas con una de las mejores ofertas del mercado,
+    brindando beneficios únicos, acceso preferencial y experiencias
+    personalizadas para nuestros usuarios, garantizando valor, calidad y
+    satisfacción en cada suscripción.
         </p>
       </div>
+
+  
 
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
         {data.map((item, index) => (
