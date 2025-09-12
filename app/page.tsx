@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import Chatbot from "../components/features/Chatbot";
 import "./globals.css";
 
 type FAQItemProps = {
@@ -49,6 +49,7 @@ export default function Home() {
                 <span className="text-[#dfbc0c]">HEA</span>
               </span>
             </h1>
+               <Chatbot />
             <p className="text-xl sm:text-2xl text-black mt-2">Explora el arte como nunca antes.</p>
             <Link href="/membresias">
               <button className="bg-[#d8c40c] text-white px-4 py-2 border-none rounded-2xl cursor-pointer font-semibold text-lg transition-colors duration-300 hover:bg-[#9c7905] mt-4">
