@@ -27,13 +27,15 @@ const Header = () => {
 
       {/* Botones a la derecha */}
       <div className="flex items-center gap-3">
+        {/* Solo texto */}
         <Link href="/registro">
-          <button className="text-black px-4 py-2 border-none cursor-pointer font-semibold text-lg transition-colors duration-300 hover:text-[#9c7905]">
+          <span className="text-black px-4 py-2 font-semibold text-lg transition-colors duration-300 hover:text-[#9c7905] cursor-pointer">
             Registrarse
-          </button>
+          </span>
         </Link>
+        {/* Botón con estilo de Home */}
         <Link href="/login">
-          <button className="bg-[#d8c40c] text-white px-4 py-2 border-none rounded-2xl cursor-pointer font-semibold text-lg transition-colors duration-300 hover:bg-[#9c7905]">
+          <button className="group relative h-12 px-6 rounded-2xl bg-gradient-to-r from-[#d8c40c] to-[#9c7905] font-semibold text-white shadow-lg transition-all duration-300 hover:brightness-110 hover:scale-[1.02]">
             Iniciar sesión
           </button>
         </Link>
