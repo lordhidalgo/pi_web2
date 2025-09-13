@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 /* (Opcional) Aquí puedes agregar estilos globales personalizados 
-  si los necesitas, por ejemplo, para la animación que usas.
+   si los necesitas, por ejemplo, para la animación que usas.
 */
 @layer base {
   body {
-    font-family: Georgia, serif; /* Ejemplo de cómo aplicar tu fuente globalmente */
+    font-family: Georgia, serif; /* Fuente global */
   }
 }
