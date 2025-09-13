@@ -18,7 +18,7 @@ const Header = () => {
       </Link>
 
       {/* Menú al centro */}
-      <nav className={`nav md:flex md:items-center md:gap-10 ${menuOpen ? 'open' : ''} hidden`}>
+      <nav className="nav md:flex md:items-center md:gap-10 hidden">
         <Link href="/galeria" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Galería de arte</Link>
         <Link href="/sobre-nosotros" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Sobre nosotros</Link>
         <Link href="#soporte" className="text-decoration-none text-[#333] text-xl relative py-1 transition-colors duration-300 overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 after:bg-[#9c7905] after:transition-transform after:duration-300 after:ease-in-out hover:text-[#9c7905] hover:after:translate-x-full">Soporte</Link>
@@ -27,8 +27,16 @@ const Header = () => {
 
       {/* Botones a la derecha */}
       <div className="flex items-center gap-3">
-        <button className="text-black px-4 py-2 border-none cursor-pointer font-semibold text-lg transition-colors duration-300 hover:text-[#9c7905]">Registrarse</button>
-        <button className="bg-[#d8c40c] text-white px-4 py-2 border-none rounded-2xl cursor-pointer font-semibold text-lg transition-colors duration-300 hover:bg-[#9c7905]">Iniciar sesión</button>
+        <Link href="/registro">
+          <button className="text-black px-4 py-2 border-none cursor-pointer font-semibold text-lg transition-colors duration-300 hover:text-[#9c7905]">
+            Registrarse
+          </button>
+        </Link>
+        <Link href="/login">
+          <button className="bg-[#d8c40c] text-white px-4 py-2 border-none rounded-2xl cursor-pointer font-semibold text-lg transition-colors duration-300 hover:bg-[#9c7905]">
+            Iniciar sesión
+          </button>
+        </Link>
       </div>
 
       {/* Menú para móviles */}
@@ -38,13 +46,14 @@ const Header = () => {
         <div className="w-6 h-1 bg-[#333] rounded-sm"></div>
       </div>
 
-      {/* Menú móvil abierto */}
       {menuOpen && (
-        <nav className="absolute top-16 right-0 bg-white flex flex-col items-start p-4 gap-4 w-full border-t border-[#ddd] md:hidden">
+        <nav className="md:hidden absolute top-16 right-4 bg-whitesmoke border border-[#bebebec5] rounded-lg shadow-lg p-4 flex flex-col gap-4 w-48 z-50">
           <Link href="/galeria" className="text-[#333] text-lg hover:text-[#9c7905]">Galería de arte</Link>
           <Link href="/sobre-nosotros" className="text-[#333] text-lg hover:text-[#9c7905]">Sobre nosotros</Link>
           <Link href="#soporte" className="text-[#333] text-lg hover:text-[#9c7905]">Soporte</Link>
-          <Link href="/PaginaMembresia" className="text-[#333] text-lg hover:text-[#9c7905]">Membresía</Link>
+          <Link href="/membresias" className="text-[#333] text-lg hover:text-[#9c7905]">Membresía</Link>
+          <Link href="/registro" className="text-[#333] text-lg hover:text-[#9c7905]">Registrarse</Link>
+          <Link href="/login" className="text-[#333] text-lg hover:text-[#9c7905]">Iniciar sesión</Link>
         </nav>
       )}
     </header>
