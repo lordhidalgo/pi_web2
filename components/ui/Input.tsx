@@ -25,7 +25,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         style={{
           background: useMotionTemplate`
             radial-gradient(
-              ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
+              ${
+                visible ? radius + "px" : "0px"
+              } circle at ${mouseX}px ${mouseY}px,
               #d8c40c 0%, /* dorado claro en el centro */
               #9c7905 70%, /* dorado oscuro hacia el borde */
               transparent 90%
@@ -40,24 +42,22 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            `shadow-input dark:placeholder-text-neutral-600 flex h-10 w-full 
-            rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-black 
-            transition duration-400 group-hover/input:shadow-none 
-            placeholder:text-neutral-400 
-            focus-visible:ring-[2px] focus-visible:ring-[#d8c40c] 
-            focus-visible:border-[#9c7905] 
-            focus-visible:outline-none 
-            disabled:cursor-not-allowed disabled:opacity-50 
-            dark:bg-zinc-800 dark:text-white dark:border-zinc-700 
-            dark:focus-visible:ring-[#d8c40c]`,
-            className,
+            `shadow-input flex h-10 w-full 
+              rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black 
+              transition duration-400 group-hover/input:shadow-none 
+              placeholder:text-gray-400 
+              focus-visible:ring-[2px] focus-visible:ring-[#d8c40c] 
+              focus-visible:border-[#9c7905] 
+              focus-visible:outline-none 
+              disabled:cursor-not-allowed disabled:opacity-50`,
+            className
           )}
           ref={ref}
           {...props}
         />
       </motion.div>
     );
-  },
+  }
 );
 Input.displayName = "Input";
 
