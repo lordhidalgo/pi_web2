@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Chatbot from "../components/features/Chatbot";
-import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 import "./globals.css";
 
 type FAQItemProps = {
@@ -37,24 +36,6 @@ const FAQItem = ({ question, answer, index, activeIndex, setActiveIndex }: FAQIt
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  // Gradiente dinámico SOLO para el contenedor de "Ayudando a la comunidad artística"
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const { left, top } = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
-  }
-
-  const dynamicBackground = useMotionTemplate`
-    radial-gradient(
-      circle at ${mouseX}px ${mouseY}px,
-      rgba(255, 233, 133, 0.9),
-      rgba(180, 140, 0, 0.85)
-    )
-  `;
-
   return (
     <>
       <main className="flex justify-center items-center p-8 sm:p-16 min-h-[calc(100vh-80px)] bg-[#fdf7f5] font-georgia">
@@ -68,10 +49,10 @@ export default function Home() {
                 <span className="text-[#dfbc0c]">HEA</span>
               </span>
             </h1>
-            <Chatbot />
+               <Chatbot />
             <p className="text-xl sm:text-2xl text-black mt-2">Explora el arte como nunca antes.</p>
             <Link href="/membresias">
-              <button className="group relative mt-4 block h-12 px-6 rounded-2xl bg-gradient-to-r from-[#d8c40c] to-[#9c7905] font-semibold text-white shadow-lg transition-all duration-300 hover:brightness-110 hover:scale-[1.02] mx-auto md:mx-0">
+              <button className="bg-[#d8c40c] text-white px-4 py-2 border-none rounded-2xl cursor-pointer font-semibold text-lg transition-colors duration-300 hover:bg-[#9c7905] mt-4">
                 Hazte miembro
               </button>
             </Link>
@@ -107,18 +88,12 @@ export default function Home() {
           <p className="text-xl sm:text-2xl text-white mb-6 drop-shadow-lg">
             Muestra tus obras y conecta con otros artistas.
           </p>
-          <button className="group relative block h-12 px-6 rounded-2xl bg-gradient-to-r from-[#d8c40c] to-[#9c7905] font-semibold text-white shadow-lg transition-all duration-300 hover:brightness-110 hover:scale-[1.02] mx-auto">
+          <button className="bg-[#d8c40c] text-white px-4 py-2 border-none rounded-2xl cursor-pointer font-semibold text-lg transition-colors duration-300 hover:bg-[#9c7905]">
             Publica tu primera obra
           </button>
         </div>
       </section>
-
-      {/* Contenedor "Ayudando a la comunidad artística" con fondo dinámico */}
-      <motion.div
-        onMouseMove={handleMouseMove}
-        style={{ backgroundImage: dynamicBackground }}
-        className="w-full mx-auto my-12 max-w-6xl rounded-[32px] shadow-lg shadow-gray-400/30 p-10 relative z-10"
-      >
+      <div className="w-full mx-auto my-12 max-w-6xl bg-gradient-to-br from-[#fffbe6] to-[#ffe082] rounded-[32px] shadow-lg shadow-gray-400/30 p-10 relative z-10">
         <h2 className="text-3xl sm:text-4xl text-[#333] mb-8 text-center font-bold">
           Ayudando a la comunidad artística global
         </h2>
@@ -152,7 +127,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
+
 
       <hr />
 
