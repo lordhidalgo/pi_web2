@@ -21,7 +21,7 @@ export default function RootLayout({
       <html lang="es" className="light" style={{ colorScheme: "light" }}>
       <body className={inter.className}>
         <Providers>
-          <HeaderWrapper /> {/* 👈 ahora el header se oculta solo en ciertas rutas */}
+          <HeaderWrapper />
           <main>{children}</main>
           <Footer />
         </Providers>

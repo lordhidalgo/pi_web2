@@ -5,7 +5,7 @@ import Header from "./Header";
 
 export default function HeaderWrapper() {
   const pathname = usePathname();
-  const hideHeaderRoutes = ["/galeria"];
+  const hideHeaderRoutes = ["/catalogo"];
 
   if (hideHeaderRoutes.includes(pathname)) {
     return null; // 👈 No muestra nada en estas rutas

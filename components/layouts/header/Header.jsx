@@ -177,7 +177,7 @@ export default function Header() {
           <NavButton href="/noticias">NOTICIAS</NavButton>
           <NavButton href="/empleado">COMO EMPLEADO</NavButton>
           <NavButton href="/admin">COMO ADMINISTRADOR</NavButton>
-          <NavButton href="/catalogo">CATÁLOGO</NavButton>
+          <Link href="/catalogo"><NavButton href="/catalogo">CATÁLOGO</NavButton></Link>
           <NavButton href="/promociones">PROMOCIONES</NavButton>
           <NavButton href="/soporte">SOPORTE</NavButton>
           <hr className="border-gray-700 w-full" />
