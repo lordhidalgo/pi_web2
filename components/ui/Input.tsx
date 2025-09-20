@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { useMotionTemplate, useMotionValue, motion } from "motion/react";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -28,8 +28,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               ${
                 visible ? radius + "px" : "0px"
               } circle at ${mouseX}px ${mouseY}px,
-              #d8c40c 0%, /* dorado claro en el centro */
-              #9c7905 70%, /* dorado oscuro hacia el borde */
+              #009dff 0%, /* azul en el centro */
+              #7dffb2 70%, /* verde menta hacia el borde */
               transparent 90%
             )
           `,
@@ -43,13 +43,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           className={cn(
             `shadow-input flex h-10 w-full 
-              rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black 
-              transition duration-400 group-hover/input:shadow-none 
-              placeholder:text-gray-400 
-              focus-visible:ring-[2px] focus-visible:ring-[#d8c40c] 
-              focus-visible:border-[#9c7905] 
+              rounded-md border bg-white px-3 py-2 text-sm text-black 
+              transition duration-300 group-hover/input:shadow-none 
+              placeholder:text-gray-400 group-hover/input:placeholder:text-[#009dff] focus:placeholder:text-[#009dff]
+              focus-visible:ring-[2px] focus-visible:ring-[#009dff] 
+              focus-visible:border-[#7dffb2] 
               focus-visible:outline-none 
               disabled:cursor-not-allowed disabled:opacity-50`,
+            visible ? "border-transparent" : "border-gray-300",
             className
           )}
           ref={ref}

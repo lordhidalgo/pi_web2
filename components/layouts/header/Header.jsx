@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import { Input } from "@/components/ui/Input";
 import {
   FaShoppingCart,
   FaGoogle,
@@ -9,6 +10,7 @@ import {
   FaTwitter,
   FaApple,
 } from "react-icons/fa";
+import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 
 function NavButton({ onClick, href, children }) {
   if (onClick) {
@@ -108,32 +110,35 @@ function Modal({ open, onClose, children, size = "w-96" }) {
   );
 }
 
-// Componente para título con efecto reactivo al mouse
+// Componente para título con gradiente radial que sigue el mouse (mantiene colores actuales)
 function GradientTitle({ children }) {
-  const titleRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const ref = useRef(null);
 
   function handleMouseMove(e) {
-    const rect = titleRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 6; // movimiento ligero
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 6;
-    titleRef.current.style.transform = `translate(${x}px, ${y}px)`;
+    const rect = ref.current.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
   }
 
-  function resetPosition() {
-    titleRef.current.style.transform = `translate(0px, 0px)`;
-  }
+  const textGradient = useMotionTemplate`
+    radial-gradient(
+      circle at ${mouseX}px ${mouseY}px,
+      #009dff,
+      #7dffb2
+    )
+  `;
 
   return (
-    <h2
-      ref={titleRef}
+    <motion.h2
+      ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseLeave={resetPosition}
-      className="text-2xl font-bold mb-4 text-center 
-                 bg-gradient-to-r from-[#009dff] to-[#7dffb2] bg-clip-text text-transparent 
-                 transition-transform duration-150"
+      className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent cursor-default"
+      style={{ backgroundImage: textGradient }}
     >
       {children}
-    </h2>
+    </motion.h2>
   );
 }
 
@@ -244,20 +249,8 @@ export default function Header() {
       <Modal open={loginOpen} onClose={() => setLoginOpen(false)} size="w-96">
         <GradientTitle>Iniciar Sesión</GradientTitle>
         <form className="flex flex-col space-y-3">
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            className="border border-gray-300 px-3 py-2 rounded-md 
-                       focus:outline-none focus:ring-2 focus:ring-[#009dff] 
-                       placeholder:text-gray-400 transition"
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            className="border border-gray-300 px-3 py-2 rounded-md 
-                       focus:outline-none focus:ring-2 focus:ring-[#7dffb2] 
-                       placeholder:text-gray-400 transition"
-          />
+          <Input type="email" placeholder="Correo electrónico" />
+          <Input type="password" placeholder="Contraseña" />
           <button
             className="bg-gradient-to-r from-[#009dff] to-[#7dffb2] 
                        text-white py-2 rounded-md shadow-sm 
@@ -271,27 +264,9 @@ export default function Header() {
       <Modal open={registerOpen} onClose={() => setRegisterOpen(false)} size="w-96">
         <GradientTitle>Crear Cuenta</GradientTitle>
         <form className="flex flex-col space-y-3">
-          <input
-            type="text"
-            placeholder="Nombre completo"
-            className="border border-gray-300 px-3 py-2 rounded-md 
-                       focus:outline-none focus:ring-2 focus:ring-[#009dff] 
-                       placeholder:text-gray-400 transition"
-          />
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            className="border border-gray-300 px-3 py-2 rounded-md 
-                       focus:outline-none focus:ring-2 focus:ring-[#009dff] 
-                       placeholder:text-gray-400 transition"
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            className="border border-gray-300 px-3 py-2 rounded-md 
-                       focus:outline-none focus:ring-2 focus:ring-[#7dffb2] 
-                       placeholder:text-gray-400 transition"
-          />
+          <Input type="text" placeholder="Nombre completo" />
+          <Input type="email" placeholder="Correo electrónico" />
+          <Input type="password" placeholder="Contraseña" />
           <button
             className="bg-gradient-to-r from-[#009dff] to-[#7dffb2] 
                        text-white py-2 rounded-md shadow-sm 
@@ -313,9 +288,7 @@ export default function Header() {
       </Modal>
 
       <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} size="w-[600px]">
-        <h2 className="text-2xl font-bold mb-4 text-center text-red-600">
-          Sobre Nosotros - Game Conec 🎮
-        </h2>
+        <GradientTitle>Sobre Nosotros - Game Conec 🎮</GradientTitle>
         <div className="space-y-3 text-gray-700 leading-relaxed">
           <p>
             Bienvenido a <strong>Game Conec</strong>, tu tienda de videojuegos favorita. 
@@ -333,9 +306,9 @@ export default function Header() {
         </div>
         <div className="mt-4 flex justify-center">
           <img
-            src="/images/img/game-store.jpg"
+            src="/images/logo-2078018_1280.png"
             alt="Nuestra tienda"
-            className="rounded-lg shadow-md w-full max-h-60 object-cover"
+            className="rounded-lg shadow-md w-cover max-h-60 object-cover"
           />
         </div>
         <p className="mt-3 text-center italic text-gray-600">
