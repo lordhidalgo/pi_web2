@@ -34,7 +34,9 @@ export default function Games() {
           <a href="#" className="font-semibold hover:text-cyan-400 transition">
             Inicio
           </a>
-          <a href="#" className="font-semibold text-cyan-400">Juegos</a>
+          <a href="#" className="font-semibold text-cyan-400">
+            Juegos
+          </a>
           <a href="#" className="font-semibold hover:text-cyan-400 transition">
             Ofertas
           </a>
@@ -71,14 +73,16 @@ export default function Games() {
             <div
               key={p.id}
               className="relative rounded-xl shadow-lg overflow-hidden h-80 transform transition hover:scale-105 duration-300"
-              style={{
-                backgroundImage: `url(${p.images?.[0] || "https://via.placeholder.com/300"})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
             >
+              {/* Imagen de producto */}
+              <img
+                src={p.images?.[0] || "https://via.placeholder.com/300"}
+                alt={p.name}
+                className="w-full h-full object-cover"
+              />
+
               {/* Overlay oscuro */}
-              <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-end p-6 text-center">
+              <div className="absolute inset-0 bg-black/60 flex flex-col justify-end p-6 text-center">
                 <h3 className="text-xl font-bold">{p.name}</h3>
                 <p className="text-sky-400">{p.brand}</p>
                 <p className="text-gray-400 text-sm">{p.slug}</p>

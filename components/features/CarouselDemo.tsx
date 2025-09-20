@@ -4,15 +4,15 @@ import {Carousel} from "@/components/ui/carousel";
 export function CarouselDemo() {
   const slideData = [
   {
-    title: "Mystic Mountains",
+    title: "god of war",
     button: "Explore Component",
-    src: "/images/SuperMariGalary.jpeg",
+    src: "/images/godofwar.webp",
     description: "Una vista mística de montañas cubiertas de niebla.",
   },
   {
-    title: "Urban Dreams",
+    title: "super mario",
     button: "Explore Component",
-    src: "/images/urban.jpg",
+    src: "/images/SuperMariGalary.jpeg",
     description: "La ciudad iluminada en un sueño urbano vibrante.",
   },
   {

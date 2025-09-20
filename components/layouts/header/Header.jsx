@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import {
   FaShoppingCart,
@@ -8,8 +8,6 @@ import {
   FaFacebook,
   FaTwitter,
   FaApple,
-  FaBars,
-  FaTimes,
 } from "react-icons/fa";
 
 function NavButton({ onClick, href, children }) {
@@ -17,7 +15,10 @@ function NavButton({ onClick, href, children }) {
     return (
       <button
         onClick={onClick}
-        className="px-3 py-2 text-sm font-semibold hover:text-red-600 transition flex items-center h-10"
+        className="text-white text-xl relative py-1 transition-colors duration-300 overflow-hidden 
+                   after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 
+                   after:bg-[#33cfff] after:transition-transform after:duration-300 after:ease-in-out 
+                   hover:text-[#33cfff] hover:after:translate-x-full"
       >
         {children}
       </button>
@@ -26,7 +27,10 @@ function NavButton({ onClick, href, children }) {
   return (
     <Link
       href={href}
-      className="px-3 py-2 text-sm font-semibold hover:text-red-600 transition flex items-center h-10"
+      className="text-white text-xl relative py-1 transition-colors duration-300 overflow-hidden 
+                 after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 
+                 after:bg-[#33cfff] after:transition-transform after:duration-300 after:ease-in-out 
+                 hover:text-[#33cfff] hover:after:translate-x-full"
     >
       {children}
     </Link>
@@ -43,11 +47,14 @@ function DropdownMenu({ title, items }) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <span className="cursor-pointer px-3 py-2 text-sm font-semibold hover:text-red-600 transition h-10 flex items-center">
+      <span className="cursor-pointer text-white text-xl relative py-1 transition-colors duration-300 overflow-hidden 
+                       after:content-[''] after:absolute after:bottom-0 after:left-[-100%] after:w-full after:h-0.5 
+                       after:bg-[#33cfff] after:transition-transform after:duration-300 after:ease-in-out 
+                       hover:text-[#33cfff] hover:after:translate-x-full h-10 flex items-center">
         {title}
       </span>
       <div
-        className={`absolute top-full left-0 mt-2 bg-red-800 rounded-md shadow-lg z-50 w-44 transition-all duration-200 ${
+        className={`absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded-md shadow-lg z-50 w-52 transition-all duration-200 ${
           open ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
@@ -55,7 +62,7 @@ function DropdownMenu({ title, items }) {
           <Link
             key={item.href}
             href={item.href}
-            className="block px-4 py-2 text-white hover:bg-white hover:text-black transition"
+            className="block px-4 py-2 text-white hover:text-[#33cfff] transition"
           >
             {item.label}
           </Link>
@@ -70,7 +77,7 @@ function CartButton({ href }) {
   return (
     <Link
       href={href}
-      className="text-white hover:text-red-600 transition text-2xl flex items-center"
+      className="text-white hover:text-[#33cfff] transition text-2xl flex items-center"
     >
       <FaShoppingCart />
     </Link>
@@ -89,7 +96,6 @@ function Modal({ open, onClose, children, size = "w-96" }) {
         className={`bg-white rounded-lg shadow-xl p-6 relative animate-scale-in ${size} max-h-[80vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Botón cerrar */}
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-xl"
           onClick={onClose}
@@ -102,34 +108,57 @@ function Modal({ open, onClose, children, size = "w-96" }) {
   );
 }
 
+// Componente para título con efecto reactivo al mouse
+function GradientTitle({ children }) {
+  const titleRef = useRef(null);
+
+  function handleMouseMove(e) {
+    const rect = titleRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 6; // movimiento ligero
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 6;
+    titleRef.current.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  function resetPosition() {
+    titleRef.current.style.transform = `translate(0px, 0px)`;
+  }
+
+  return (
+    <h2
+      ref={titleRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={resetPosition}
+      className="text-2xl font-bold mb-4 text-center 
+                 bg-gradient-to-r from-[#009dff] to-[#7dffb2] bg-clip-text text-transparent 
+                 transition-transform duration-150"
+    >
+      {children}
+    </h2>
+  );
+}
+
 export default function Header() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // estado menú hamburguesa
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="bg-black text-white flex items-center h-20 px-4 font-sans relative shadow-md z-50">
+      <header className="flex justify-between items-center p-4 sm:p-2 bg-black border-b border-b-gray-800 z-50 shadow-md font-sans relative text-white">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center ml-2 hover:scale-105 transition-transform"
+          className="flex items-center justify-center cursor-pointer transition-transform duration-200 hover:scale-110"
         >
-          <img
-            src="/images/img/logo-artthea.png"
-            width={60}
-            height={60}
-            alt="Logo de la marca"
-          />
+          <img src="/images/logo-2078018_1280.png" alt="Logo de la marca" className="h-10 w-auto" />
         </Link>
 
-        {/* Navegación principal - solo en pantallas grandes */}
-        <nav className="hidden md:flex flex-1 justify-center items-center space-x-2">
+        {/* Navegación */}
+        <nav className="nav md:flex md:items-center md:gap-10 hidden flex-1 justify-center">
           <NavButton href="/">INICIO</NavButton>
           <NavButton onClick={() => setAboutOpen(true)}>SOBRE NOSOTROS</NavButton>
           <NavButton href="/noticias">NOTICIAS</NavButton>
-
           <DropdownMenu
             title="INGRESAR COMO"
             items={[
@@ -137,7 +166,6 @@ export default function Header() {
               { href: "/admin", label: "COMO ADMINISTRADOR" },
             ]}
           />
-
           <DropdownMenu
             title="SECCIONES"
             items={[
@@ -145,14 +173,27 @@ export default function Header() {
               { href: "/promociones", label: "Recompensas y Promociones" },
             ]}
           />
-
           <NavButton href="/soporte">SOPORTE</NavButton>
         </nav>
 
-        {/* Botones de usuario - solo escritorio */}
-        <div className="hidden md:flex items-center space-x-3 ml-6">
-          <NavButton onClick={() => setLoginOpen(true)}>INICIAR SESIÓN</NavButton>
-          <NavButton onClick={() => setRegisterOpen(true)}>REGISTRAR</NavButton>
+        {/* Botones de usuario */}
+        <div className="hidden md:flex items-center gap-3 ml-6">
+          <button
+            onClick={() => setRegisterOpen(true)}
+            className="text-white px-4 py-2 font-semibold text-lg transition-colors duration-300 hover:text-[#33cfff] cursor-pointer"
+          >
+            Registrarse
+          </button>
+          <button
+            onClick={() => setLoginOpen(true)}
+            className="h-12 px-6 rounded-2xl 
+                       bg-gradient-to-r from-[#009dff] to-[#7dffb2] 
+                       font-semibold text-white shadow-sm 
+                       transition-all duration-300 
+                       hover:brightness-105 hover:scale-[1.01]"
+          >
+            Iniciar sesión
+          </button>
         </div>
 
         {/* Carrito */}
@@ -160,80 +201,106 @@ export default function Header() {
           <CartButton href="/carrito" />
         </div>
 
-        {/* Botón hamburguesa (solo móvil) */}
-        <button
-          className="md:hidden ml-auto text-2xl"
+        {/* Botón hamburguesa */}
+        <div
+          className="md:hidden flex flex-col cursor-pointer gap-1.5 ml-auto"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </button>
+          <div className="w-6 h-1 bg-white rounded-sm"></div>
+          <div className="w-6 h-1 bg-white rounded-sm"></div>
+          <div className="w-6 h-1 bg-white rounded-sm"></div>
+        </div>
       </header>
 
       {/* Menú móvil */}
       {menuOpen && (
-        <div className="md:hidden bg-black text-white flex flex-col items-start px-6 py-4 space-y-3">
+        <div className="md:hidden absolute top-16 right-4 bg-black border border-gray-700 rounded-lg shadow-lg p-4 flex flex-col gap-4 w-56 z-50 text-white">
           <NavButton href="/">INICIO</NavButton>
           <NavButton onClick={() => setAboutOpen(true)}>SOBRE NOSOTROS</NavButton>
           <NavButton href="/noticias">NOTICIAS</NavButton>
           <NavButton href="/empleado">COMO EMPLEADO</NavButton>
           <NavButton href="/admin">COMO ADMINISTRADOR</NavButton>
-          <Link href="/catalogo"><NavButton href="/catalogo">CATÁLOGO</NavButton></Link>
+          <NavButton href="/catalogo">CATÁLOGO</NavButton>
           <NavButton href="/promociones">PROMOCIONES</NavButton>
           <NavButton href="/soporte">SOPORTE</NavButton>
           <hr className="border-gray-700 w-full" />
-          <NavButton onClick={() => setLoginOpen(true)}>INICIAR SESIÓN</NavButton>
-          <NavButton onClick={() => setRegisterOpen(true)}>REGISTRAR</NavButton>
+          <button
+            onClick={() => setRegisterOpen(true)}
+            className="text-left text-white text-lg hover:text-[#33cfff]"
+          >
+            Registrarse
+          </button>
+          <button
+            onClick={() => setLoginOpen(true)}
+            className="text-left text-white text-lg hover:text-[#33cfff]"
+          >
+            Iniciar sesión
+          </button>
           <CartButton href="/carrito" />
         </div>
       )}
 
       {/* ----- Modales ----- */}
-
-      {/* Modal Iniciar Sesión */}
       <Modal open={loginOpen} onClose={() => setLoginOpen(false)} size="w-96">
-        <h2 className="text-xl font-semibold mb-4 text-center">Iniciar Sesión</h2>
+        <GradientTitle>Iniciar Sesión</GradientTitle>
         <form className="flex flex-col space-y-3">
           <input
             type="email"
             placeholder="Correo electrónico"
-            className="border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+            className="border border-gray-300 px-3 py-2 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#009dff] 
+                       placeholder:text-gray-400 transition"
           />
           <input
             type="password"
             placeholder="Contraseña"
-            className="border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+            className="border border-gray-300 px-3 py-2 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#7dffb2] 
+                       placeholder:text-gray-400 transition"
           />
-          <button className="bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition">
+          <button
+            className="bg-gradient-to-r from-[#009dff] to-[#7dffb2] 
+                       text-white py-2 rounded-md shadow-sm 
+                       hover:brightness-105 transition"
+          >
             Entrar
           </button>
         </form>
       </Modal>
 
-      {/* Modal Registrar */}
       <Modal open={registerOpen} onClose={() => setRegisterOpen(false)} size="w-96">
-        <h2 className="text-xl font-semibold mb-4 text-center">Crear Cuenta</h2>
+        <GradientTitle>Crear Cuenta</GradientTitle>
         <form className="flex flex-col space-y-3">
           <input
             type="text"
             placeholder="Nombre completo"
-            className="border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+            className="border border-gray-300 px-3 py-2 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#009dff] 
+                       placeholder:text-gray-400 transition"
           />
           <input
             type="email"
             placeholder="Correo electrónico"
-            className="border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+            className="border border-gray-300 px-3 py-2 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#009dff] 
+                       placeholder:text-gray-400 transition"
           />
           <input
             type="password"
             placeholder="Contraseña"
-            className="border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+            className="border border-gray-300 px-3 py-2 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#7dffb2] 
+                       placeholder:text-gray-400 transition"
           />
-          <button className="bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition">
+          <button
+            className="bg-gradient-to-r from-[#009dff] to-[#7dffb2] 
+                       text-white py-2 rounded-md shadow-sm 
+                       hover:brightness-105 transition"
+          >
             Registrar
           </button>
         </form>
 
-        {/* Opciones de registro rápido */}
         <div className="mt-4">
           <p className="text-center text-gray-500 mb-2">O regístrate con</p>
           <div className="flex justify-center space-x-4 text-2xl">
@@ -245,7 +312,6 @@ export default function Header() {
         </div>
       </Modal>
 
-      {/* Modal Sobre Nosotros */}
       <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} size="w-[600px]">
         <h2 className="text-2xl font-bold mb-4 text-center text-red-600">
           Sobre Nosotros - Game Conec 🎮
