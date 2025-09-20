@@ -1,60 +1,95 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-export default function CatalogoPage() {
-  const [items, setItems] = useState([]);
-  const [error, setError] = useState(null);
+export default function Games() {
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/items");
-
-        if (!response.ok) {
-          throw new Error("Error en la respuesta del servidor");
-        }
-
-        // 👇 validamos si hay contenido
-        const text = await response.text();
-        if (!text) {
-          setItems([]); // si está vacío, dejamos lista vacía
-          return;
-        }
-
-        const data = JSON.parse(text);
-        setItems(data);
+        const response = await fetch("http://localhost:8080/api/products");
+        const data = await response.json();
+        setProducts(data);
       } catch (err) {
-        console.error("Error al obtener items:", err);
-        setError(err.message);
+        console.error("Error al obtener productos:", err);
       }
     };
-
-    fetchItems();
+    fetchProducts();
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#06141B] text-white flex flex-col items-center py-10">
-      <h1 className="text-3xl font-bold mb-6">Catálogo de Items</h1>
+    <div className="min-h-screen bg-[#06141B] text-white">
+      {/* 🔹 HEADER */}
+      <header className="flex items-center justify-between px-8 py-4 bg-[#0B1D26] shadow-lg fixed top-0 left-0 w-full z-50">
+        <div className="flex items-center gap-3">
+          <img
+            src="/images/logo-2078018_1280.png"
+            alt="GameConnect Logo"
+            className="h-10 w-auto"
+          />
+          <h1 className="text-xl font-bold">GameConnect</h1>
+        </div>
 
-      {error && <p className="text-red-400">⚠️ {error}</p>}
+        <nav className="flex items-center gap-6">
+          <a href="#" className="font-semibold hover:text-cyan-400 transition">
+            Inicio
+          </a>
+          <a href="#" className="font-semibold text-cyan-400">Juegos</a>
+          <a href="#" className="font-semibold hover:text-cyan-400 transition">
+            Ofertas
+          </a>
+          <a href="#" className="font-semibold hover:text-cyan-400 transition">
+            Contacto
+          </a>
+        </nav>
 
-      {/* LISTA DE ITEMS */}
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.length === 0 ? (
-          <p className="text-gray-400">No hay items en la base de datos</p>
-        ) : (
-          items.map((item) => (
+        <div className="flex items-center gap-4">
+          <input
+            type="text"
+            placeholder="Buscar un juego"
+            className="px-4 py-2 rounded-full bg-transparent border border-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          />
+          <img
+            src="/images/user.png"
+            alt="Usuario"
+            className="h-8 w-8 rounded-full border border-gray-500"
+          />
+        </div>
+      </header>
+
+      {/* 🔹 TITULO CENTRAL */}
+      <main className="flex flex-col items-center justify-center h-screen text-center">
+        <h2 className="text-4xl md:text-5xl font-extrabold leading-snug">
+          Aquí podrás encontrar todos nuestros <br /> juegos.
+        </h2>
+      </main>
+
+      {/* 🔹 GRID DE PRODUCTOS */}
+      <section className="px-10 pb-16 -mt-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((p) => (
             <div
-              key={item.id}
-              className="bg-gray-900 p-6 rounded-xl shadow-lg text-center"
+              key={p.id}
+              className="relative rounded-xl shadow-lg overflow-hidden h-80 transform transition hover:scale-105 duration-300"
+              style={{
+                backgroundImage: `url(${p.images?.[0] || "https://via.placeholder.com/300"})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
             >
-              <h2 className="text-xl font-bold">{item.nombre}</h2>
-              <p className="text-sky-400">${item.precio}</p>
-              <p className="text-gray-400">Stock: {item.stock}</p>
+              {/* Overlay oscuro */}
+              <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-end p-6 text-center">
+                <h3 className="text-xl font-bold">{p.name}</h3>
+                <p className="text-sky-400">{p.brand}</p>
+                <p className="text-gray-400 text-sm">{p.slug}</p>
+                <p className="mt-2 text-lg font-semibold text-green-400">
+                  ${p.price}
+                </p>
+              </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
