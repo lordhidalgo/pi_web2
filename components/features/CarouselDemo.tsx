@@ -16,21 +16,21 @@ export function CarouselDemo() {
     description: "La ciudad iluminada en un sueño urbano vibrante.",
   },
   {
-    title: "Neon Nights",
+    title: "rainbow 6",
     button: "Explore Component",
-    src: "/images/neon.jpg",
+    src: "/images/98.webp",
     description: "Luces de neón que iluminan la noche.",
   },
   {
-    title: "Desert Whispers",
+    title: "Cyberpunk",
     button: "Explore Component",
-    src: "/images/desert.jpg",
+    src: "/images/Cyberpunk_2077.jpg",
     description: "El silencio y misterio del desierto.",
   },
   {
-    title: "Desert Whispers",
+    title: "war thunder",
     button: "Explore Component",
-    src: "/images/desert.jpg",
+    src: "/images/war thunder.jpg",
     description: "El silencio y misterio del desierto.",
   },
   {
