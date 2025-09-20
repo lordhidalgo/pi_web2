@@ -2,7 +2,7 @@
 import BackgroundVideo from "@/components/features/BackgroundVideo";
 import { CarouselDemo } from "@/components/features/CarouselDemo";
 import FAQSection from "@/components/features/FAQSection";
-import { HeroParallaxDemo } from "@/components/features/HeroParallaxDemo";
+import  Hero  from "../components/ui/HeroParallaxDemo";
 import React, { useRef } from "react";
 
 export default function Page() {
@@ -12,7 +12,7 @@ export default function Page() {
     <main className="relative flex min-h-screen flex-col items-center justify-center">
       <div className="w-full">
         <BackgroundVideo src="/videos/26619-359604050.mp4" overlay={true}>
-          <HeroParallaxDemo />
+          <Hero/>
         </BackgroundVideo>
       </div>
 
