@@ -15,24 +15,26 @@ import { CartSheet } from "../../features/SheetDemo";
 
 // ---- Botón genérico de navegación ----
 function NavButton({ onClick, href, children }) {
+  const baseClass = "text-white text-sm font-medium relative py-1 transition-colors duration-300 tracking-wide group";
+  const underline = (
+    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#009dff] transition-all duration-300 group-hover:w-full" />
+  );
   if (onClick) {
     return (
-      <button
-        onClick={onClick}
-        className="text-white text-sm font-medium relative py-1 transition-colors duration-300 
-                   hover:text-[#33cfff] tracking-wide"
-      >
-        {children}
+      <button onClick={onClick} className={baseClass + " overflow-visible"} style={{ position: 'relative' }}>
+        <span className="relative inline-block">
+          {children}
+          {underline}
+        </span>
       </button>
     );
   }
   return (
-    <Link
-      href={href}
-      className="text-white text-sm font-medium relative py-1 transition-colors duration-300 
-                 hover:text-[#33cfff] tracking-wide"
-    >
-      {children}
+    <Link href={href} className={baseClass + " overflow-visible"} style={{ position: 'relative' }}>
+      <span className="relative inline-block">
+        {children}
+        {underline}
+      </span>
     </Link>
   );
 }
@@ -40,20 +42,18 @@ function NavButton({ onClick, href, children }) {
 // ---- Dropdown ----
 function DropdownMenu({ title, items }) {
   const [open, setOpen] = useState(false);
-
   return (
     <div
-      className="relative flex items-center"
+      className="relative flex items-center group"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <span className="cursor-pointer text-white text-sm font-medium py-1 hover:text-[#33cfff] tracking-wide">
+      <span className="cursor-pointer text-white text-sm font-medium py-1 tracking-wide relative inline-block">
         {title}
+        <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#009dff] transition-all duration-300 group-hover:w-full" />
       </span>
       <div
-        className={`absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded-md shadow-lg z-50 w-56 transition-all duration-200 ${
-          open ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded-md shadow-lg z-50 w-56 transition-all duration-200 ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
       >
         {items.map((item) => (
           <Link
@@ -132,10 +132,59 @@ function GradientTitle({ children }) {
 
 // ---- Header ----
 export default function Header() {
+  // --- Efecto gradiente dinámico para botones de los modales ---
+  const modalLoginBtnRef = useRef(null);
+  const modalRegisterBtnRef = useRef(null);
+  const modalLoginMouseX = useMotionValue(0);
+  const modalLoginMouseY = useMotionValue(0);
+  const modalRegisterMouseX = useMotionValue(0);
+  const modalRegisterMouseY = useMotionValue(0);
+
+  function handleModalLoginBtnMove(e) {
+    const rect = modalLoginBtnRef.current.getBoundingClientRect();
+    modalLoginMouseX.set(e.clientX - rect.left);
+    modalLoginMouseY.set(e.clientY - rect.top);
+  }
+  function handleModalRegisterBtnMove(e) {
+    const rect = modalRegisterBtnRef.current.getBoundingClientRect();
+    modalRegisterMouseX.set(e.clientX - rect.left);
+    modalRegisterMouseY.set(e.clientY - rect.top);
+  }
+  const modalLoginGradient = useMotionTemplate`
+    radial-gradient(circle at ${modalLoginMouseX}px ${modalLoginMouseY}px, #009dff, #7dffb2)
+  `;
+  const modalRegisterGradient = useMotionTemplate`
+    radial-gradient(circle at ${modalRegisterMouseX}px ${modalRegisterMouseY}px, #009dff, #7dffb2)
+  `;
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // --- Efecto gradiente dinámico para botones ---
+  const loginBtnRef = useRef(null);
+  const registerBtnRef = useRef(null);
+  const loginMouseX = useMotionValue(0);
+  const loginMouseY = useMotionValue(0);
+  const registerMouseX = useMotionValue(0);
+  const registerMouseY = useMotionValue(0);
+
+  function handleLoginBtnMove(e) {
+    const rect = loginBtnRef.current.getBoundingClientRect();
+    loginMouseX.set(e.clientX - rect.left);
+    loginMouseY.set(e.clientY - rect.top);
+  }
+  function handleRegisterBtnMove(e) {
+    const rect = registerBtnRef.current.getBoundingClientRect();
+    registerMouseX.set(e.clientX - rect.left);
+    registerMouseY.set(e.clientY - rect.top);
+  }
+  const loginGradient = useMotionTemplate`
+    radial-gradient(circle at ${loginMouseX}px ${loginMouseY}px, #009dff, #7dffb2)
+  `;
+  const registerGradient = useMotionTemplate`
+    radial-gradient(circle at ${registerMouseX}px ${registerMouseY}px, #009dff, #7dffb2)
+  `;
 
   return (
     <>
@@ -147,13 +196,14 @@ export default function Header() {
             alt="Logo"
             className="h-9 w-auto"
           />
-          <span className="hidden md:inline font-bold text-lg uppercase tracking-widest font-[var(--font-title)]">
+          <span className="hidden md:inline text-lg uppercase tracking-widest font-[var(--font-title)]">
             GAME CONNECT
           </span>
+      
         </Link>
 
         {/* Navegación (solo en pantallas grandes) */}
-        <nav className="hidden lg:flex items-center gap-10 flex-1 justify-center text-sm font-medium font-[var(--font-body)]">
+  <nav className="hidden lg:flex items-center gap-10 flex-1 justify-center text-sm font-[var(--font-body)]">
           <NavButton href="/">INICIO</NavButton>
           <NavButton onClick={() => setAboutOpen(true)}>SOBRE NOSOTROS</NavButton>
           <NavButton href="/noticias">NOTICIAS</NavButton>
@@ -176,17 +226,30 @@ export default function Header() {
 
         {/* Botones usuario (desktop) */}
         <div className="hidden lg:flex items-center gap-5">
-          <button
+          <motion.button
+            ref={registerBtnRef}
+            onMouseMove={handleRegisterBtnMove}
             onClick={() => setRegisterOpen(true)}
-            className="text-white text-sm font-medium hover:text-[#33cfff] transition"
+            className="text-black text-sm font-medium transition-colors duration-300 px-4 py-2 rounded-md"
+            style={{ backgroundImage: registerGradient }}
+            whileHover={{ scale: 1.05 }}
           >
             Registrarse
+          </motion.button>
+          <motion.button
+            ref={loginBtnRef}
+            onMouseMove={handleLoginBtnMove}
+            REGISTRARSE
           </button>
           <button
             onClick={() => setLoginOpen(true)}
-            className="h-10 px-6 rounded-md bg-gradient-to-r from-[#009dff] to-[#7dffb2] font-semibold text-sm shadow hover:brightness-110 transition"
+            className="text-black h-10 px-6 rounded-md font-semibold text-sm shadow transition-colors duration-300"
+            style={{ backgroundImage: loginGradient, color: '#000' }}
+            whileHover={{ scale: 1.05 }}
           >
             Iniciar sesión
+          </motion.button>
+            INICIAR SESSION
           </button>
         </div>
 
@@ -240,9 +303,24 @@ export default function Header() {
         <form className="flex flex-col space-y-3">
           <Input type="email" placeholder="Correo electrónico" />
           <Input type="password" placeholder="Contraseña" />
-          <button className="bg-gradient-to-r from-[#009dff] to-[#7dffb2] text-white py-2 rounded-md shadow-sm hover:brightness-105 transition">
+          <motion.button
+            ref={modalLoginBtnRef}
+            onMouseMove={handleModalLoginBtnMove}
+            className="text-black py-2 rounded-md shadow-sm transition-colors"
+            style={{ backgroundImage: modalLoginGradient }}
+            whileHover={{ scale: 1.05 }}
+          >
             Entrar
-          </button>
+          </motion.button>
+          <motion.button
+            ref={modalLoginBtnRef}
+            onMouseMove={handleModalLoginBtnMove}
+            className="py-2 rounded-md transition-colors bg-clip-text text-transparent"
+            style={{ backgroundImage: modalLoginGradient }}
+            whileHover={{ scale: 1.05 }}
+          >
+            olvidaste tu Contraseña?
+          </motion.button>
         </form>
       </Modal>
 
@@ -252,18 +330,24 @@ export default function Header() {
           <Input type="text" placeholder="Nombre completo" />
           <Input type="email" placeholder="Correo electrónico" />
           <Input type="password" placeholder="Contraseña" />
-          <button className="bg-gradient-to-r from-[#009dff] to-[#7dffb2] text-white py-2 rounded-md shadow-sm hover:brightness-105 transition">
+          <motion.button
+            ref={modalRegisterBtnRef}
+            onMouseMove={handleModalRegisterBtnMove}
+            className="text-black py-2 rounded-md shadow-sm transition-colors"
+            style={{ backgroundImage: modalRegisterGradient }}
+            whileHover={{ scale: 1.05 }}
+          >
             Registrar
-          </button>
+          </motion.button>
         </form>
       </Modal>
 
       <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} size="w-[600px]">
-        <GradientTitle>Sobre Nosotros - Game Conec 🎮</GradientTitle>
+        <GradientTitle>Sobre Nosotros - Game Connect</GradientTitle>
         <div className="space-y-3 text-gray-300 leading-relaxed">
           <p>
-            Bienvenido a <strong>Game Conec</strong>, tu tienda de videojuegos favorita. 
-            Nacimos en <strong>2020</strong> con el sueño de conectar jugadores de todo 
+            Bienvenido a <strong>Game Conec</strong>, tu tienda de videojuegos favorita.
+            Nacimos en <strong>2020</strong> con el sueño de conectar jugadores de todo
             el mundo con los mejores títulos de cada generación.
           </p>
           <p>
