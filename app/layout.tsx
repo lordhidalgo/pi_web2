@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google'
 import "./globals.css";
 import Providers from "./providers";
 import Footer from "../components/layouts/footer/Footer";
-import HeaderWrapper from "../components/layouts/header/HeaderWrapper"; // 👈 usamos el wrapper
+import HeaderWrapper from "../components/layouts/header/HeaderWrapper";
+import SupportChatbot from "../components/SupportChatbot"; // 👈 AGREGA ESTA LÍNEA
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           <HeaderWrapper />
           <main>{children}</main>
           <Footer />
+          <SupportChatbot /> 
         </Providers>
       </body>
     </html>
