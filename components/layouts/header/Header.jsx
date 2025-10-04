@@ -196,9 +196,6 @@ export default function Header() {
             alt="Logo"
             className="h-9 w-auto"
           />
-          <span className="hidden md:inline text-lg uppercase tracking-widest font-[var(--font-title)]">
-            GAME CONNECT
-          </span>
       
         </Link>
 
@@ -218,7 +215,7 @@ export default function Header() {
             title="SECCIONES"
             items={[
               { href: "/catalogo", label: "Catálogo de Juegos" },
-              { href: "/promociones", label: "Recompensas y Promociones" },
+              { href: "/recompensa", label: "Recompensas y Promociones" },
             ]}
           />
           <NavButton href="/soporte">SOPORTE</NavButton>
@@ -239,9 +236,6 @@ export default function Header() {
           <motion.button
             ref={loginBtnRef}
             onMouseMove={handleLoginBtnMove}
-            REGISTRARSE
-          </button>
-          <button
             onClick={() => setLoginOpen(true)}
             className="text-black h-10 px-6 rounded-md font-semibold text-sm shadow transition-colors duration-300"
             style={{ backgroundImage: loginGradient, color: '#000' }}
@@ -249,8 +243,6 @@ export default function Header() {
           >
             Iniciar sesión
           </motion.button>
-            INICIAR SESSION
-          </button>
         </div>
 
         {/* Carrito (desktop) */}
@@ -278,7 +270,7 @@ export default function Header() {
           <NavButton href="/empleado">COMO EMPLEADO</NavButton>
           <NavButton href="/admin">COMO ADMINISTRADOR</NavButton>
           <NavButton href="/catalogo">CATÁLOGO</NavButton>
-          <NavButton href="/promociones">PROMOCIONES</NavButton>
+          <NavButton href="/cualquiercosa">PROMOCIONES</NavButton>
           <NavButton href="/soporte">SOPORTE</NavButton>
           <hr className="border-gray-700" />
           <button

@@ -1,6 +1,6 @@
 "use client";
 import BackgroundVideo from "@/components/features/BackgroundVideo";
-import { CarouselDemo } from "@/components/features/CarouselDemo";
+import { CarouselSpacing } from "@/components/features/CarouselDemo";
 import FAQSection from "@/components/features/FAQSection";
 import  Hero  from "../components/ui/HeroParallaxDemo";
 import React, { useRef } from "react";
@@ -18,11 +18,14 @@ export default function Page() {
    
 
       {/* 🔹 Noticias destacadas con carrusel */}
-      <div className="w-full max-w-7x3 px-4 py-10 h-[620px] pt-1 bg-black">
+      <div className="w-full max-w-7x3 px-4 py-10 h-[430px] pt-1 bg-black">
         <h2 className="text-left text-white text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest border-b-2 border-gray-700 pb-2 mb-6">
           RECOMENDACIONES PARA TI
         </h2>
-        <CarouselDemo />
+       <div className="flex justify-center" >
+  <CarouselSpacing />
+</div>
+
       </div>
 
       {/* 🔹 Recompensas y Promociones */}
