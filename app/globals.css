@@ -10,7 +10,7 @@
 @layer base {
   body {
      --font-title: 'Cinzel', serif;
-  --font-body: 'Inter', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
 
   }
 }

@@ -147,9 +147,7 @@ export default function Header() {
             alt="Logo"
             className="h-9 w-auto"
           />
-          <span className="hidden md:inline font-bold text-lg uppercase tracking-widest font-[var(--font-title)]">
-            GAME CONNECT
-          </span>
+      
         </Link>
 
         {/* Navegación (solo en pantallas grandes) */}
@@ -180,13 +178,13 @@ export default function Header() {
             onClick={() => setRegisterOpen(true)}
             className="text-white text-sm font-medium hover:text-[#33cfff] transition"
           >
-            Registrarse
+            REGISTRARSE
           </button>
           <button
             onClick={() => setLoginOpen(true)}
             className="h-10 px-6 rounded-md bg-gradient-to-r from-[#009dff] to-[#7dffb2] font-semibold text-sm shadow hover:brightness-110 transition"
           >
-            Iniciar sesión
+            INICIAR SESSION
           </button>
         </div>
 
