@@ -11,6 +11,7 @@ import {
   FaApple,
 } from "react-icons/fa";
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
+import { CartSheet} from "../../features/SheetDemo"
 
 function NavButton({ onClick, href, children }) {
   if (onClick) {
@@ -77,12 +78,9 @@ function DropdownMenu({ title, items }) {
 // Icono de carrito
 function CartButton({ href }) {
   return (
-    <Link
-      href={href}
-      className="text-white hover:text-[#33cfff] transition text-2xl flex items-center"
-    >
-      <FaShoppingCart />
-    </Link>
+   <div> 
+      <CartSheet  className="pl-[-40px]"/>
+    </div>
   );
 }
 

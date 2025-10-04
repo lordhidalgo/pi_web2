@@ -15,6 +15,7 @@ export default function Page() {
           <Hero/>
         </BackgroundVideo>
       </div>
+   
 
       {/* 🔹 Noticias destacadas con carrusel */}
       <div className="w-full max-w-7x3 px-4 py-10 h-[620px]">
