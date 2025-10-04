@@ -10,16 +10,16 @@ export default function Page() {
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center">
-      <div className="w-full">
-        <BackgroundVideo src="/videos/26619-359604050.mp4" overlay={true}>
+      <div className="w-full ">
+        <BackgroundVideo src="/videos/89894-616430996.mp4" overlay={true}>
           <Hero/>
         </BackgroundVideo>
       </div>
    
 
       {/* 🔹 Noticias destacadas con carrusel */}
-      <div className="w-full max-w-7x3 px-4 py-10 h-[620px]">
-        <h2 className="text-left text-black text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest border-b-2 border-gray-700 pb-2 mb-6">
+      <div className="w-full max-w-7x3 px-4 py-10 h-[620px] pt-1 bg-black">
+        <h2 className="text-left text-white text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest border-b-2 border-gray-700 pb-2 mb-6">
           RECOMENDACIONES PARA TI
         </h2>
         <CarouselDemo />

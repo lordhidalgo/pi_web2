@@ -9,7 +9,9 @@
 */
 @layer base {
   body {
-    font-family: Georgia, serif; /* Fuente global */
+     --font-title: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+
   }
 }
 @theme inline {
