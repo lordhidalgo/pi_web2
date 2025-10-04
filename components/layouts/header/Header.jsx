@@ -15,13 +15,19 @@ import { CartSheet } from "../../features/SheetDemo";
 
 // ---- Botón genérico de navegación ----
 function NavButton({ onClick, href, children }) {
-  const baseClass = "text-white text-sm font-medium relative py-1 transition-colors duration-300 tracking-wide group";
+  const baseClass =
+    "text-white text-sm font-medium relative py-1 transition-colors duration-300 tracking-wide group";
   const underline = (
     <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#009dff] transition-all duration-300 group-hover:w-full" />
   );
+
   if (onClick) {
     return (
-      <button onClick={onClick} className={baseClass + " overflow-visible"} style={{ position: 'relative' }}>
+      <button
+        onClick={onClick}
+        className={baseClass + " overflow-visible"}
+        style={{ position: "relative" }}
+      >
         <span className="relative inline-block">
           {children}
           {underline}
@@ -29,8 +35,13 @@ function NavButton({ onClick, href, children }) {
       </button>
     );
   }
+
   return (
-    <Link href={href} className={baseClass + " overflow-visible"} style={{ position: 'relative' }}>
+    <Link
+      href={href}
+      className={baseClass + " overflow-visible"}
+      style={{ position: "relative" }}
+    >
       <span className="relative inline-block">
         {children}
         {underline}
@@ -53,7 +64,9 @@ function DropdownMenu({ title, items }) {
         <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#009dff] transition-all duration-300 group-hover:w-full" />
       </span>
       <div
-        className={`absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded-md shadow-lg z-50 w-56 transition-all duration-200 ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded-md shadow-lg z-50 w-56 transition-all duration-200 ${
+          open ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
       >
         {items.map((item) => (
           <Link
@@ -132,30 +145,6 @@ function GradientTitle({ children }) {
 
 // ---- Header ----
 export default function Header() {
-  // --- Efecto gradiente dinámico para botones de los modales ---
-  const modalLoginBtnRef = useRef(null);
-  const modalRegisterBtnRef = useRef(null);
-  const modalLoginMouseX = useMotionValue(0);
-  const modalLoginMouseY = useMotionValue(0);
-  const modalRegisterMouseX = useMotionValue(0);
-  const modalRegisterMouseY = useMotionValue(0);
-
-  function handleModalLoginBtnMove(e) {
-    const rect = modalLoginBtnRef.current.getBoundingClientRect();
-    modalLoginMouseX.set(e.clientX - rect.left);
-    modalLoginMouseY.set(e.clientY - rect.top);
-  }
-  function handleModalRegisterBtnMove(e) {
-    const rect = modalRegisterBtnRef.current.getBoundingClientRect();
-    modalRegisterMouseX.set(e.clientX - rect.left);
-    modalRegisterMouseY.set(e.clientY - rect.top);
-  }
-  const modalLoginGradient = useMotionTemplate`
-    radial-gradient(circle at ${modalLoginMouseX}px ${modalLoginMouseY}px, #009dff, #7dffb2)
-  `;
-  const modalRegisterGradient = useMotionTemplate`
-    radial-gradient(circle at ${modalRegisterMouseX}px ${modalRegisterMouseY}px, #009dff, #7dffb2)
-  `;
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -179,6 +168,7 @@ export default function Header() {
     registerMouseX.set(e.clientX - rect.left);
     registerMouseY.set(e.clientY - rect.top);
   }
+
   const loginGradient = useMotionTemplate`
     radial-gradient(circle at ${loginMouseX}px ${loginMouseY}px, #009dff, #7dffb2)
   `;
@@ -196,11 +186,13 @@ export default function Header() {
             alt="Logo"
             className="h-9 w-auto"
           />
-      
+          <span className="hidden md:inline text-lg uppercase tracking-widest font-[var(--font-title)]">
+            GAME CONNECT
+          </span>
         </Link>
 
         {/* Navegación (solo en pantallas grandes) */}
-  <nav className="hidden lg:flex items-center gap-10 flex-1 justify-center text-sm font-[var(--font-body)]">
+        <nav className="hidden lg:flex items-center gap-10 flex-1 justify-center text-sm font-[var(--font-body)]">
           <NavButton href="/">INICIO</NavButton>
           <NavButton onClick={() => setAboutOpen(true)}>SOBRE NOSOTROS</NavButton>
           <NavButton href="/noticias">NOTICIAS</NavButton>
@@ -215,7 +207,7 @@ export default function Header() {
             title="SECCIONES"
             items={[
               { href: "/catalogo", label: "Catálogo de Juegos" },
-              { href: "/recompensa", label: "Recompensas y Promociones" },
+              { href: "/promociones", label: "Recompensas y Promociones" },
             ]}
           />
           <NavButton href="/soporte">SOPORTE</NavButton>
@@ -233,12 +225,13 @@ export default function Header() {
           >
             Registrarse
           </motion.button>
+
           <motion.button
             ref={loginBtnRef}
             onMouseMove={handleLoginBtnMove}
             onClick={() => setLoginOpen(true)}
-            className="text-black h-10 px-6 rounded-md font-semibold text-sm shadow transition-colors duration-300"
-            style={{ backgroundImage: loginGradient, color: '#000' }}
+            className="text-black text-sm font-medium transition-colors duration-300 px-4 py-2 rounded-md"
+            style={{ backgroundImage: loginGradient }}
             whileHover={{ scale: 1.05 }}
           >
             Iniciar sesión
@@ -250,7 +243,7 @@ export default function Header() {
           <CartButton />
         </div>
 
-        {/* Botón hamburguesa (aparece en md y sm) */}
+        {/* Botón hamburguesa (móvil/tablet) */}
         <div
           className="lg:hidden flex flex-col gap-1 ml-auto cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -270,7 +263,7 @@ export default function Header() {
           <NavButton href="/empleado">COMO EMPLEADO</NavButton>
           <NavButton href="/admin">COMO ADMINISTRADOR</NavButton>
           <NavButton href="/catalogo">CATÁLOGO</NavButton>
-          <NavButton href="/cualquiercosa">PROMOCIONES</NavButton>
+          <NavButton href="/promociones">PROMOCIONES</NavButton>
           <NavButton href="/soporte">SOPORTE</NavButton>
           <hr className="border-gray-700" />
           <button
@@ -289,33 +282,26 @@ export default function Header() {
         </div>
       )}
 
-      {/* Modales */}
+      {/* Modal de inicio de sesión */}
       <Modal open={loginOpen} onClose={() => setLoginOpen(false)}>
         <GradientTitle>Iniciar Sesión</GradientTitle>
         <form className="flex flex-col space-y-3">
           <Input type="email" placeholder="Correo electrónico" />
           <Input type="password" placeholder="Contraseña" />
           <motion.button
-            ref={modalLoginBtnRef}
-            onMouseMove={handleModalLoginBtnMove}
             className="text-black py-2 rounded-md shadow-sm transition-colors"
-            style={{ backgroundImage: modalLoginGradient }}
+            style={{ backgroundImage: loginGradient }}
             whileHover={{ scale: 1.05 }}
           >
             Entrar
           </motion.button>
-          <motion.button
-            ref={modalLoginBtnRef}
-            onMouseMove={handleModalLoginBtnMove}
-            className="py-2 rounded-md transition-colors bg-clip-text text-transparent"
-            style={{ backgroundImage: modalLoginGradient }}
-            whileHover={{ scale: 1.05 }}
-          >
-            olvidaste tu Contraseña?
-          </motion.button>
+          <button className="text-sm text-[#7dffb2] hover:text-[#009dff]">
+            ¿Olvidaste tu contraseña?
+          </button>
         </form>
       </Modal>
 
+      {/* Modal de registro */}
       <Modal open={registerOpen} onClose={() => setRegisterOpen(false)}>
         <GradientTitle>Crear Cuenta</GradientTitle>
         <form className="flex flex-col space-y-3">
@@ -323,10 +309,8 @@ export default function Header() {
           <Input type="email" placeholder="Correo electrónico" />
           <Input type="password" placeholder="Contraseña" />
           <motion.button
-            ref={modalRegisterBtnRef}
-            onMouseMove={handleModalRegisterBtnMove}
             className="text-black py-2 rounded-md shadow-sm transition-colors"
-            style={{ backgroundImage: modalRegisterGradient }}
+            style={{ backgroundImage: registerGradient }}
             whileHover={{ scale: 1.05 }}
           >
             Registrar
@@ -334,21 +318,24 @@ export default function Header() {
         </form>
       </Modal>
 
+      {/* Modal sobre nosotros */}
       <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} size="w-[600px]">
         <GradientTitle>Sobre Nosotros - Game Connect</GradientTitle>
         <div className="space-y-3 text-gray-300 leading-relaxed">
           <p>
-            Bienvenido a <strong>Game Conec</strong>, tu tienda de videojuegos favorita.
-            Nacimos en <strong>2020</strong> con el sueño de conectar jugadores de todo
-            el mundo con los mejores títulos de cada generación.
+            Bienvenido a <strong>Game Connect</strong>, tu tienda de videojuegos
+            favorita. Nacimos en <strong>2020</strong> con el sueño de conectar
+            jugadores de todo el mundo con los mejores títulos de cada generación.
           </p>
           <p>
-            En nuestra plataforma encontrarás desde clásicos retro hasta las últimas
-            novedades de consola y PC. Creemos en la magia de los videojuegos como
-            una forma de conectar, divertir y crear recuerdos inolvidables.
+            En nuestra plataforma encontrarás desde clásicos retro hasta las
+            últimas novedades de consola y PC. Creemos en la magia de los
+            videojuegos como una forma de conectar, divertir y crear recuerdos
+            inolvidables.
           </p>
           <p>
-            Nuestra misión es simple: <em>llevar la pasión gamer a todos los rincones</em>.
+            Nuestra misión es simple:{" "}
+            <em>llevar la pasión gamer a todos los rincones</em>.
           </p>
         </div>
       </Modal>
