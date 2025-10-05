@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google'
 import "./globals.css";
 import Providers from "./providers";
 import Footer from "../components/layouts/footer/Footer";
-import HeaderWrapper from "../components/layouts/header/HeaderWrapper"; // 👈 usamos el wrapper
+import HeaderWrapper from "../components/layouts/header/HeaderWrapper";
+import ChatBotFlotante from "../components/ChatBotFlotante"; // 👈 Importamos el ChatBot
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +19,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-      <html lang="es" className="light" style={{ colorScheme: "light" }}>
+    <html lang="es" className="light" style={{ colorScheme: "light" }}>
       <body className={inter.className}>
         <Providers>
           <HeaderWrapper />
           <main>{children}</main>
           <Footer />
+          <ChatBotFlotante /> 
         </Providers>
       </body>
     </html>
