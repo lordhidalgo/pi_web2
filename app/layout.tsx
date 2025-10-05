@@ -4,7 +4,7 @@ import "./globals.css";
 import Providers from "./providers";
 import Footer from "../components/layouts/footer/Footer";
 import HeaderWrapper from "../components/layouts/header/HeaderWrapper";
-import ChatBotFlotante from "../components/ChatBotFlotante"; // 👈 Importamos el ChatBot
+import ChatBotFlotante from "../components/ChatBotFlotante"; 
 
 const inter = Inter({ subsets: ["latin"] });
 
