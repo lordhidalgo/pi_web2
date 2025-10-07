@@ -150,7 +150,7 @@ export default function Header() {
             title="Secciones"
             items={[
               { href: "/catalogo", label: "Catálogo de Juegos" },
-              { href: "/promociones", label: "Recompensas y Promociones" },
+              { href: "/recompensa", label: "Recompensas y Promociones" },
             ]}
           />
           <NavButton href="/soporte">Soporte</NavButton>
@@ -202,7 +202,7 @@ export default function Header() {
           <NavButton href="/empleado">Como Empleado</NavButton>
           <NavButton href="/admin">Como Administrador</NavButton>
           <NavButton href="/catalogo">Catálogo</NavButton>
-          <NavButton href="/promociones">Promociones</NavButton>
+          <NavButton href="/recompesa">Promociones</NavButton>
           <NavButton href="/soporte">Soporte</NavButton>
           <hr className="border-[#00ffff30]" />
           <button
