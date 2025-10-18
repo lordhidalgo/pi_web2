@@ -313,7 +313,7 @@ export default function Header() {
             style={{ backgroundImage: modalLoginGradient }}
             whileHover={{ scale: 1.05 }}
           >
-            olvidaste tu Contraseña?
+            olvidaste tu contraseña?
           </motion.button>
         </form>
       </Modal>
