@@ -8,6 +8,7 @@ import { CartSheet } from "../../features/SheetDemo";
 import { FaUserAstronaut, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 import { supabase } from "../../../supabase/client";
 import { useCart } from "../../features/CartContext";
+import AboutModal from '../../AboutModal';
 
 // ----------------------------- COMPONENTES AUXILIARES -----------------------------
 function NavButton({ onClick, href, children }) {
@@ -104,6 +105,7 @@ function GradientTitle({ children }) {
 export default function Header() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false); // ✅ AGREGADO
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const { clearCart } = useCart();
@@ -166,7 +168,7 @@ export default function Header() {
               { href: "/recompensa", label: "Recompensas y Promociones" },
             ]}
           />
-          <NavButton href="/soporte">Soporte</NavButton>
+          <NavButton onClick={() => setAboutOpen(true)}>Sobre Nosotros</NavButton> {/* ✅ MODIFICADO */}
         </nav>
 
         {/* Botones desktop */}
@@ -225,7 +227,7 @@ export default function Header() {
             <NavButton href="/noticias">Noticias</NavButton>
             <NavButton href="/catalogo">Catálogo</NavButton>
             <NavButton href="/recompensa">Recompensas</NavButton>
-            <NavButton href="/soporte">Soporte</NavButton>
+            <NavButton onClick={() => { setAboutOpen(true); setMenuOpen(false); }}>Sobre Nosotros</NavButton> {/* ✅ MODIFICADO */}
 
             {user ? (
               <>
@@ -355,6 +357,12 @@ export default function Header() {
           </motion.button>
         </form>
       </Modal>
+
+      {/* ✅ MODAL SOBRE NOSOTROS AGREGADO */}
+      <AboutModal 
+        isOpen={aboutOpen} 
+        onClose={() => setAboutOpen(false)} 
+      />
     </>
   );
 }
