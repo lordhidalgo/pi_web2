@@ -1,19 +1,15 @@
+// app/providers.tsx
 "use client";
 
-// Path: src/app/providers.tsx
-// Use this component to wrap our entire app in any providers we need.
-
-import { ThemeProvider } from "../providers/theme-provider";
+import * as React from "react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { CartProvider } from "@/components/features/CartContext";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      {children}
-    </ThemeProvider>
+    // NextThemesProvider es un componente válido exportado por next-themes
+    <NextThemesProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <CartProvider>{children}</CartProvider>
+    </NextThemesProvider>
   );
 }
