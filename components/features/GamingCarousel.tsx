@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { supabase } from "../../supabase/client";
 import { useCart } from "../../components/features/CartContext";
 
@@ -13,15 +12,15 @@ type Product = {
   name: string;
   price: number;
   image_url?: string;
-  feature?: string; // disponibilidad
+  feature?: string;
   features?: string[];
 };
 
 export default function GamingCarousel() {
-  const [emblaRef] = useEmblaCarousel(
-    { loop: true, align: "start" },
-    [Autoplay({ delay: 4000, stopOnInteraction: false })]
-  );
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false, // 🚫 sin loop brusco
+    align: "start",
+  });
 
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
@@ -69,8 +68,29 @@ export default function GamingCarousel() {
     return matchesSearch && matchesFilter;
   });
 
+  // 🕹️ Navegación suave sin loop feo
+  const scrollPrev = useCallback(() => {
+    if (!emblaApi) return;
+    if (emblaApi.canScrollPrev()) {
+      emblaApi.scrollPrev();
+    } else {
+      // 🔁 Si está al inicio → ir al último
+      emblaApi.scrollTo(filtered.length - 1);
+    }
+  }, [emblaApi, filtered.length]);
+
+  const scrollNext = useCallback(() => {
+    if (!emblaApi) return;
+    if (emblaApi.canScrollNext()) {
+      emblaApi.scrollNext();
+    } else {
+      // 🔁 Si está al final → volver al inicio
+      emblaApi.scrollTo(0);
+    }
+  }, [emblaApi]);
+
   return (
-    <div className="w-full bg-gradient-to-b from-[#1e003e] to-[#3b007a] text-white px-6 py-10 rounded-3xl shadow-lg relative overflow-hidden">
+    <div className="relative w-full bg-gradient-to-b from-[#1e003e] to-[#3b007a] text-white px-6 py-10 rounded-3xl shadow-lg overflow-hidden">
       {/* 🔍 Buscador y filtros */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 flex-wrap mt-2 pt-4">
         <div className="relative w-full md:w-72 flex-shrink-0">
@@ -102,66 +122,80 @@ export default function GamingCarousel() {
       </div>
 
       {/* 🎮 Carrusel */}
-      <div ref={emblaRef} className="overflow-hidden">
-        <div className="flex gap-8">
-          {filtered.map((p) => (
-            <motion.div
-              key={p.id}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-              className="min-w-[320px] sm:min-w-[400px] md:min-w-[440px] relative rounded-2xl shadow-lg overflow-hidden 
-                        border border-transparent bg-gradient-to-br from-[#5e00a6] via-[#9a00ff] to-[#ff00b8]
-                        p-[2px] hover:shadow-pink-500/50 transition-all duration-300 group"
-            >
-              <div className="relative rounded-2xl bg-[#100024] overflow-hidden">
-                {/* 🏷️ Etiqueta de disponibilidad */}
-                {p.feature && (
-                  <div className="absolute top-3 left-3 bg-gradient-to-r from-pink-600 to-purple-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md z-20">
-                    {p.feature}
-                  </div>
-                )}
+      <div className="relative">
+        {/* Flechas laterales */}
+        <button
+          onClick={scrollPrev}
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-[#2a0057]/80 hover:bg-pink-700 text-white p-3 rounded-full shadow-md transition-all hover:scale-110 border border-pink-500"
+        >
+          <FaChevronLeft size={20} />
+        </button>
 
-                {/* Imagen de fondo */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-100 transition-all duration-300 blur-[1px] group-hover:blur-0"
-                  style={{
-                    backgroundImage: p.image_url
-                      ? `url(${p.image_url})`
-                      : "linear-gradient(135deg, #3b007a, #1e003e)",
-                  }}
-                ></div>
+        <button
+          onClick={scrollNext}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-[#2a0057]/80 hover:bg-pink-700 text-white p-3 rounded-full shadow-md transition-all hover:scale-110 border border-pink-500"
+        >
+          <FaChevronRight size={20} />
+        </button>
 
-                {/* Contenido */}
-                <div className="relative z-10 flex flex-col justify-end items-center p-8 bg-black/40 backdrop-blur-sm h-full rounded-2xl">
-                  <h3 className="text-xl font-bold text-center drop-shadow-md mb-2">
-                    {p.name}
-                  </h3>
-                  <p className="text-lg font-semibold text-pink-400 mb-4">
-                    ${p.price.toFixed(2)}
-                  </p>
+        <div ref={emblaRef} className="overflow-hidden px-6 py-8">
+          <div className="flex gap-8 items-center">
+            {filtered.map((p) => (
+              <motion.div
+                key={p.id}
+                whileHover={{ scale: 1.05, y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="min-w-[320px] sm:min-w-[400px] md:min-w-[440px] relative rounded-2xl shadow-lg overflow-hidden 
+                          border border-transparent bg-gradient-to-br from-[#5e00a6] via-[#9a00ff] to-[#ff00b8]
+                          p-[2px] hover:shadow-pink-500/50 transition-transform duration-300 group will-change-transform origin-center"
+              >
+                <div className="relative rounded-2xl bg-[#100024] overflow-hidden">
+                  {p.feature && (
+                    <div className="absolute top-3 left-3 bg-gradient-to-r from-pink-600 to-purple-600 text-xs font-semibold px-3 py-1 rounded-full shadow-md z-20">
+                      {p.feature}
+                    </div>
+                  )}
 
-                  <div className="flex gap-4">
-                    <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-purple-700 hover:from-pink-500 hover:to-purple-600 text-white font-medium shadow-md hover:shadow-pink-500/40 transition-all">
-                      Visualizar
-                    </button>
-                    <button
-                      onClick={() =>
-                        addToCart({
-                          id: p.id,
-                          name: p.name,
-                          price: p.price,
-                          image_url: p.image_url,
-                        })
-                      }
-                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-800 to-pink-700 hover:from-purple-700 hover:to-pink-600 text-white font-medium shadow-md hover:shadow-pink-500/40 transition-all"
-                    >
-                      Añadir
-                    </button>
+                  <div
+                    className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-100 transition-all duration-300 blur-[1px] group-hover:blur-0"
+                    style={{
+                      backgroundImage: p.image_url
+                        ? `url(${p.image_url})`
+                        : "linear-gradient(135deg, #3b007a, #1e003e)",
+                    }}
+                  ></div>
+
+                  <div className="relative z-10 flex flex-col justify-end items-center p-8 bg-black/40 backdrop-blur-sm h-full rounded-2xl">
+                    <h3 className="text-xl font-bold text-center drop-shadow-md mb-2">
+                      {p.name}
+                    </h3>
+                    <p className="text-lg font-semibold text-pink-400 mb-4">
+                      ${p.price.toFixed(2)}
+                    </p>
+
+                    <div className="flex gap-4">
+                      <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-purple-700 hover:from-pink-500 hover:to-purple-600 text-white font-medium shadow-md hover:shadow-pink-500/40 transition-all">
+                        Visualizar
+                      </button>
+                      <button
+                        onClick={() =>
+                          addToCart({
+                            id: p.id,
+                            name: p.name,
+                            price: p.price,
+                            image_url: p.image_url,
+                          })
+                        }
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-800 to-pink-700 hover:from-purple-700 hover:to-pink-600 text-white font-medium shadow-md hover:shadow-pink-500/40 transition-all"
+                      >
+                        Añadir
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
