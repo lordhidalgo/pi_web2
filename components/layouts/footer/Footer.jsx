@@ -1,27 +1,74 @@
+"use client";
 import React from "react";
+import { Facebook, Instagram, Twitter, Gamepad2 } from "lucide-react";
 
 const Footer = () => (
-  <footer className="bg-[#f7f7f7] p-6 sm:p-8 mt-8 text-base text-[#222] border-t border-[#e0e0e0]">
-    <div className="flex flex-wrap justify-between items-start gap-8">
+  <footer className="bg-black text-[#d9d9d9] p-8 sm:p-10 border-t border-[#222] relative overflow-hidden">
+    {/* Fondo neón difuminado */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,170,0.1),transparent_70%)] pointer-events-none"></div>
+
+    <div className="flex flex-wrap justify-between items-start gap-10 relative z-10">
+      {/* Logo y descripción */}
       <div>
-        <strong className="text-xl">Game Connect</strong>
-        <div className="text-sm sm:text-base text-[#555] mt-1">Una comunidad global de Gamers</div>
+        <div className="flex items-center gap-2">
+          <Gamepad2 size={28} className="text-[#00ff99] drop-shadow-[0_0_6px_#00ff99]" />
+          <strong className="text-2xl font-bold text-[#9b59ff] drop-shadow-[0_0_8px_#9b59ff]">
+            Game Connect
+          </strong>
+        </div>
+        <p className="text-sm sm:text-base text-[#ccc] mt-2">
+          Una comunidad global de <span className="text-[#00ffcc] font-semibold">Gamers</span>.
+        </p>
       </div>
-      <nav className="flex flex-wrap gap-4 sm:gap-6 items-center">
-        <a href="#" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Escríbenos</a>
-        <a href="#" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Normas de la Comunidad</a>
-        <a href="#" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Términos de Servicio</a>
-        <a href="#" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Política de Privacidad</a>
-        <a href="#" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Política de Devolución</a>
+
+      {/* Navegación */}
+      <nav className="flex flex-wrap gap-5 sm:gap-8 items-center text-sm sm:text-base">
+        {[
+          "Escríbenos",
+          "Normas de la Comunidad",
+          "Términos de Servicio",
+          "Política de Privacidad",
+          "Política de Devolución",
+        ].map((item) => (
+          <a
+            key={item}
+            href="#"
+            className="text-[#f5f5f5] transition-all duration-200 hover:text-[#00ffcc] hover:drop-shadow-[0_0_6px_#00ffcc]"
+          >
+            {item}
+          </a>
+        ))}
       </nav>
-      <div className="flex gap-4 items-center mt-2 sm:mt-0">
-        <a href="#" aria-label="Facebook" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Facebook</a>
-        <a href="#" aria-label="Instagram" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Instagram</a>
-        <a href="#" aria-label="Twitter" className="text-[#222] no-underline text-sm sm:text-base transition-colors duration-200 hover:text-[#9c7905]">Twitter</a>
+
+      {/* Redes sociales */}
+      <div className="flex gap-5 items-center mt-4 sm:mt-0">
+        <a
+          href="#"
+          aria-label="Facebook"
+          className="text-[#9b59ff] hover:text-[#00ffcc] transition-all duration-300 hover:drop-shadow-[0_0_8px_#00ffcc]"
+        >
+          <Facebook size={22} />
+        </a>
+        <a
+          href="#"
+          aria-label="Instagram"
+          className="text-[#ff00aa] hover:text-[#00ffcc] transition-all duration-300 hover:drop-shadow-[0_0_8px_#00ffcc]"
+        >
+          <Instagram size={22} />
+        </a>
+        <a
+          href="#"
+          aria-label="Twitter"
+          className="text-[#00acee] hover:text-[#00ffcc] transition-all duration-300 hover:drop-shadow-[0_0_8px_#00ffcc]"
+        >
+          <Twitter size={22} />
+        </a>
       </div>
     </div>
-    <div className="flex justify-between items-center mt-6 text-sm border-t border-[#e0e0e0] pt-4">
-      <span>© 2025 Game Connect - Todos los derechos reservados.</span>
+
+    {/* Derechos reservados */}
+    <div className="flex justify-between items-center mt-8 border-t border-[#222] pt-4 text-sm text-[#888] relative z-10">
+      <span>© 2025 <span className="text-[#00ffcc]">Game Connect</span> - Todos los derechos reservados.</span>
     </div>
   </footer>
 );
