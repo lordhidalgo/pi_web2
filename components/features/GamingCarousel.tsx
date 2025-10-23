@@ -6,13 +6,15 @@ import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import { supabase } from "../../supabase/client";
+import { useCart } from "../../components/features/CartContext";
 
 type Product = {
   id: string;
   name: string;
   price: number;
   image_url?: string;
-  features?: string[]; // Etiquetas como "Disponible", "Agotado"
+  feature?: string;
+  features?: string[];
 };
 
 export default function GamingCarousel() {
@@ -23,6 +25,8 @@ export default function GamingCarousel() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("Todos");
+  const { addToCart } = useCart();
 
   const filters = [
     "Todos",
@@ -34,54 +38,42 @@ export default function GamingCarousel() {
     "Deportes",
   ];
 
+  // 🔹 Cargar productos desde Supabase
   useEffect(() => {
     const fetchProducts = async () => {
-      // ✅ Obtener productos con su feature
-      const { data: productsData, error: productsError } = await supabase
+      const { data, error } = await supabase
         .from("products")
-        .select("id, name, price, feature");
+        .select("id, name, price, image_url, feature");
 
-      if (productsError) {
-        console.error("Error al cargar productos:", productsError);
+      if (error) {
+        console.error("Error al cargar productos:", error);
         return;
       }
 
-      // ✅ Obtener imágenes
-      const { data: imagesData, error: imagesError } = await supabase
-        .from("product_images")
-        .select("product_id, image_url");
+      const formatted = (data || []).map((p) => ({
+        ...p,
+        features: p.feature ? [p.feature] : [],
+      }));
 
-      if (imagesError) {
-        console.error("Error al cargar imágenes:", imagesError);
-        return;
-      }
-
-      // ✅ Combinar productos con imágenes y features
-      const combined = (productsData || []).map((p) => {
-        const img = imagesData?.find((i) => i.product_id === p.id);
-
-        return {
-          ...p,
-          image_url: img?.image_url || null,
-          features: p.feature ? [p.feature] : [], // lo convertimos en array
-        };
-      });
-
-      setProducts(combined);
+      setProducts(formatted);
     };
 
     fetchProducts();
   }, []);
 
-  const filtered = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // 🔹 Filtrado por nombre y categoría
+  const filtered = products.filter((p) => {
+    const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+    const matchesFilter =
+      selectedFilter === "Todos" ||
+      p.features?.includes(selectedFilter) ||
+      p.feature === selectedFilter;
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div className="w-full bg-gradient-to-b from-[#1e003e] to-[#3b007a] text-white px-6 py-10 rounded-3xl shadow-lg relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-600 via-purple-700 to-pink-600 animate-pulse shadow-[0_0_15px_#ff00ff] rounded-t-3xl" />
-
-      {/* 🔍 Buscador + Filtros */}
+      {/* 🔍 Buscador y filtros */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 flex-wrap mt-2 pt-4">
         <div className="relative w-full md:w-72 flex-shrink-0">
           <FaSearch className="absolute left-3 top-3 text-gray-400" />
@@ -94,23 +86,24 @@ export default function GamingCarousel() {
           />
         </div>
 
-        <div className="flex gap-4 overflow-x-auto scrollbar-hide justify-start md:justify-center w-full md:w-auto pb-2">
-          {filters.map((f, index) => (
-            <motion.button
-              key={index}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-800 to-pink-700 
-                         hover:from-pink-600 hover:to-purple-600 text-white font-medium 
-                         shadow-md hover:shadow-pink-500/40 transition-all whitespace-nowrap"
+        <div className="flex gap-2 flex-wrap justify-center md:justify-end">
+          {filters.map((filter) => (
+            <button
+              key={filter}
+              onClick={() => setSelectedFilter(filter)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                selectedFilter === filter
+                  ? "bg-pink-600 text-white shadow-md"
+                  : "bg-[#2a0057] text-gray-300 hover:bg-pink-700 hover:text-white"
+              }`}
             >
-              {f}
-            </motion.button>
+              {filter}
+            </button>
           ))}
         </div>
       </div>
 
-      {/* 🎮 Carrusel de productos */}
+      {/* 🎮 Carrusel */}
       <div ref={emblaRef} className="overflow-hidden">
         <div className="flex gap-8">
           {filtered.map((p) => (
@@ -118,10 +111,8 @@ export default function GamingCarousel() {
               key={p.id}
               whileHover={{ scale: 1.04 }}
               transition={{ duration: 0.3 }}
-              className="min-w-[320px] sm:min-w-[400px] md:min-w-[440px] rounded-2xl shadow-lg overflow-hidden 
-                         border border-[#5e00a6] hover:shadow-pink-600/30 relative group"
+              className="min-w-[320px] sm:min-w-[400px] md:min-w-[440px] rounded-2xl shadow-lg overflow-hidden border border-[#5e00a6] hover:shadow-pink-600/30 relative group"
             >
-              {/* Imagen de fondo */}
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-100 transition-all duration-300"
                 style={{
@@ -131,19 +122,6 @@ export default function GamingCarousel() {
                 }}
               ></div>
 
-              {/* 🏷️ Etiqueta dinámica ("Disponible", "Agotado", etc.) */}
-              <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
-                {(p.features || []).map((feature, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-gradient-to-r from-purple-700 to-pink-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md"
-                  >
-                    {feature}
-                  </span>
-                ))}
-              </div>
-
-              {/* Contenido */}
               <div className="relative z-10 flex flex-col justify-end items-center p-8 bg-black/40 backdrop-blur-sm h-full rounded-2xl">
                 <h3 className="text-xl font-bold text-center drop-shadow-md mb-2">
                   {p.name}
@@ -156,7 +134,17 @@ export default function GamingCarousel() {
                   <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-purple-700 hover:from-pink-500 hover:to-purple-600 text-white font-medium shadow-md hover:shadow-pink-500/40 transition-all">
                     Visualizar
                   </button>
-                  <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-800 to-pink-700 hover:from-purple-700 hover:to-pink-600 text-white font-medium shadow-md hover:shadow-pink-500/40 transition-all">
+                  <button
+                    onClick={() =>
+                      addToCart({
+                        id: p.id,
+                        name: p.name,
+                        price: p.price,
+                        image_url: p.image_url,
+                      })
+                    }
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-800 to-pink-700 hover:from-purple-700 hover:to-pink-600 text-white font-medium shadow-md hover:shadow-pink-500/40 transition-all"
+                  >
                     Añadir
                   </button>
                 </div>

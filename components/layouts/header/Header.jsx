@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { motion } from "framer-motion";
 import { CartSheet } from "../../features/SheetDemo";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaUserAstronaut, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import { supabase } from "../../../supabase/client";
+import { useCart } from "../../features/CartContext";
+import AboutModal from '../../AboutModal';
 
-// ---- Botón genérico ----
+// ----------------------------- COMPONENTES AUXILIARES -----------------------------
 function NavButton({ onClick, href, children }) {
   const baseClass =
     "text-white text-sm font-medium relative py-1 transition-colors duration-300 tracking-widest group uppercase";
@@ -18,19 +21,24 @@ function NavButton({ onClick, href, children }) {
   if (onClick) {
     return (
       <button onClick={onClick} className={baseClass}>
-        <span className="relative inline-block">{children}{underline}</span>
+        <span className="relative inline-block">
+          {children}
+          {underline}
+        </span>
       </button>
     );
   }
 
   return (
     <Link href={href} className={baseClass}>
-      <span className="relative inline-block">{children}{underline}</span>
+      <span className="relative inline-block">
+        {children}
+        {underline}
+      </span>
     </Link>
   );
 }
 
-// ---- Dropdown ----
 function DropdownMenu({ title, items }) {
   const [open, setOpen] = useState(false);
   return (
@@ -62,7 +70,6 @@ function DropdownMenu({ title, items }) {
   );
 }
 
-// ---- Modal genérico ----
 function Modal({ open, onClose, children, size = "w-96" }) {
   if (!open) return null;
   return (
@@ -86,58 +93,66 @@ function Modal({ open, onClose, children, size = "w-96" }) {
   );
 }
 
-// ---- Título estático con gradiente ----
 function GradientTitle({ children }) {
   return (
-    <h2
-      className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-[#00ffff] to-[#7dffb2] bg-clip-text text-transparent tracking-wide uppercase"
-    >
+    <h2 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-[#00ffff] to-[#7dffb2] bg-clip-text text-transparent tracking-wide uppercase">
       {children}
     </h2>
   );
 }
 
-// ---- Carrito ----
-function CartButton() {
-  return (
-    <div>
-      <CartSheet />
-    </div>
-  );
-}
-
-// ---- Header principal ----
+// ----------------------------- HEADER PRINCIPAL -----------------------------
 export default function Header() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false); // ✅ AGREGADO
+  const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { clearCart } = useCart();
 
   const buttonStyle = {
-    background:
-      "linear-gradient(90deg, #00ffff 0%, #7dffb2 100%)",
+    background: "linear-gradient(90deg, #00ffff 0%, #7dffb2 100%)",
     boxShadow: "0 0 10px #00ffff60",
+  };
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) setUser(JSON.parse(savedUser));
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    clearCart();
+    setUser(null);
+    alert("👋 Sesión cerrada correctamente");
   };
 
   return (
     <>
-      <header className="flex justify-between items-center px-10 py-4 bg-[#050505]/95 border-b border-[#00ffff30] shadow-[0_0_15px_#00ffff20] z-50 text-white font-[var(--font-body)] relative">
+      <header className="flex justify-between items-center px-6 py-4 bg-[#050505]/95 border-b border-[#00ffff30] shadow-[0_0_15px_#00ffff20] z-50 text-white relative">
         {/* Logo */}
-        <Link href="/" className="flex items-center cursor-pointer gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <img
             src="/images/logo-2078018_1280.png"
             alt="Logo"
-            className="h-9 w-auto drop-shadow-[0_0_10px_#00ffff80]"
+            className="h-9 drop-shadow-[0_0_10px_#00ffff80]"
           />
           <span className="hidden md:inline text-lg uppercase tracking-widest font-[var(--font-title)] text-[#00ffff] drop-shadow-[0_0_5px_#00ffff]">
             GAME CONNECT
           </span>
         </Link>
 
-        {/* Navegación (desktop) */}
-        <nav className="hidden lg:flex items-center gap-10 flex-1 justify-center text-sm font-[var(--font-body)]">
+        {/* Menú hamburguesa (solo móvil) */}
+        <button
+          className="lg:hidden text-[#00ffff] text-2xl focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+
+        {/* Navegación desktop */}
+        <nav className="hidden lg:flex items-center gap-10 flex-1 justify-center text-sm">
           <NavButton href="/">Inicio</NavButton>
-          <NavButton onClick={() => setAboutOpen(true)}>Sobre Nosotros</NavButton>
           <NavButton href="/noticias">Noticias</NavButton>
           <DropdownMenu
             title="Ingresar Como"
@@ -153,126 +168,201 @@ export default function Header() {
               { href: "/recompensa", label: "Recompensas y Promociones" },
             ]}
           />
-          <NavButton href="/soporte">Soporte</NavButton>
+          <NavButton onClick={() => setAboutOpen(true)}>Sobre Nosotros</NavButton> {/* ✅ MODIFICADO */}
         </nav>
 
-        {/* Botones (desktop) */}
+        {/* Botones desktop */}
         <div className="hidden lg:flex items-center gap-5">
-          <motion.button
-            onClick={() => setRegisterOpen(true)}
-            className="text-black text-sm font-bold px-4 py-2 rounded-md uppercase tracking-wide"
-            style={buttonStyle}
-            whileHover={{ scale: 1.05 }}
-          >
-            Registrarse
-          </motion.button>
-
-          <motion.button
-            onClick={() => setLoginOpen(true)}
-            className="text-black text-sm font-bold px-4 py-2 rounded-md uppercase tracking-wide"
-            style={buttonStyle}
-            whileHover={{ scale: 1.05 }}
-          >
-            Iniciar Sesión
-          </motion.button>
+          {user ? (
+            <>
+              <motion.div
+                className="text-2xl text-[#00ffff] drop-shadow-[0_0_10px_#00ffff]"
+                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <FaUserAstronaut />
+              </motion.div>
+              <span className="text-sm">{user.name}</span>
+              <motion.button
+                onClick={handleLogout}
+                className="text-black text-sm font-bold px-3 py-2 rounded-md uppercase tracking-wide flex items-center gap-2"
+                style={buttonStyle}
+                whileHover={{ scale: 1.05 }}
+              >
+                <FaSignOutAlt /> Cerrar sesión
+              </motion.button>
+            </>
+          ) : (
+            <>
+              <FaUserAstronaut className="text-2xl text-white opacity-80" />
+              <motion.button
+                onClick={() => setRegisterOpen(true)}
+                className="text-black text-sm font-bold px-4 py-2 rounded-md uppercase tracking-wide"
+                style={buttonStyle}
+                whileHover={{ scale: 1.05 }}
+              >
+                Registrarse
+              </motion.button>
+              <motion.button
+                onClick={() => setLoginOpen(true)}
+                className="text-black text-sm font-bold px-4 py-2 rounded-md uppercase tracking-wide"
+                style={buttonStyle}
+                whileHover={{ scale: 1.05 }}
+              >
+                Iniciar Sesión
+              </motion.button>
+            </>
+          )}
         </div>
 
         {/* Carrito */}
         <div className="hidden lg:block ml-6">
-          <CartButton />
+          <CartSheet />
         </div>
 
-        {/* Hamburguesa móvil */}
-        <div
-          className="lg:hidden flex flex-col gap-1 ml-auto cursor-pointer"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <div className="w-7 h-1 bg-[#00ffff] rounded shadow-[0_0_6px_#00ffff]" />
-          <div className="w-7 h-1 bg-[#00ffff] rounded shadow-[0_0_6px_#00ffff]" />
-          <div className="w-7 h-1 bg-[#00ffff] rounded shadow-[0_0_6px_#00ffff]" />
-        </div>
+        {/* Menú móvil */}
+        {menuOpen && (
+          <div className="absolute top-full left-0 w-full bg-[#0a0a0a]/95 border-t border-[#00ffff30] flex flex-col items-center py-4 space-y-3 lg:hidden z-40">
+            <NavButton href="/">Inicio</NavButton>
+            <NavButton href="/noticias">Noticias</NavButton>
+            <NavButton href="/catalogo">Catálogo</NavButton>
+            <NavButton href="/recompensa">Recompensas</NavButton>
+            <NavButton onClick={() => { setAboutOpen(true); setMenuOpen(false); }}>Sobre Nosotros</NavButton> {/* ✅ MODIFICADO */}
+
+            {user ? (
+              <>
+                <span className="text-sm">{user.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-black text-sm font-bold px-3 py-2 rounded-md uppercase tracking-wide flex items-center gap-2"
+                  style={buttonStyle}
+                >
+                  <FaSignOutAlt /> Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    setLoginOpen(true);
+                    setMenuOpen(false);
+                  }}
+                  className="text-black text-sm font-bold px-4 py-2 rounded-md uppercase tracking-wide"
+                  style={buttonStyle}
+                >
+                  Iniciar Sesión
+                </button>
+                <button
+                  onClick={() => {
+                    setRegisterOpen(true);
+                    setMenuOpen(false);
+                  }}
+                  className="text-black text-sm font-bold px-4 py-2 rounded-md uppercase tracking-wide"
+                  style={buttonStyle}
+                >
+                  Registrarse
+                </button>
+              </>
+            )}
+            <CartSheet />
+          </div>
+        )}
       </header>
 
-      {/* Menú móvil */}
-      {menuOpen && (
-        <div className="lg:hidden absolute top-16 right-4 bg-[#0a0a0a]/95 border border-[#00ffff30] rounded-lg shadow-[0_0_15px_#00ffff30] p-4 flex flex-col gap-4 w-64 z-50 text-white font-[var(--font-body)] backdrop-blur-md">
-          <NavButton href="/">Inicio</NavButton>
-          <NavButton onClick={() => setAboutOpen(true)}>Sobre Nosotros</NavButton>
-          <NavButton href="/noticias">Noticias</NavButton>
-          <NavButton href="/empleado">Como Empleado</NavButton>
-          <NavButton href="/admin">Como Administrador</NavButton>
-          <NavButton href="/catalogo">Catálogo</NavButton>
-          <NavButton href="/recompesa">Promociones</NavButton>
-          <NavButton href="/soporte">Soporte</NavButton>
-          <hr className="border-[#00ffff30]" />
-          <button
-            onClick={() => setRegisterOpen(true)}
-            className="text-left hover:text-[#00ffff]"
-          >
-            Registrarse
-          </button>
-          <button
-            onClick={() => setLoginOpen(true)}
-            className="text-left hover:text-[#00ffff]"
-          >
-            Iniciar sesión
-          </button>
-          <CartButton />
-        </div>
-      )}
-
-      {/* --- Modal Iniciar Sesión --- */}
+      {/* MODALES */}
       <Modal open={loginOpen} onClose={() => setLoginOpen(false)}>
         <GradientTitle>Iniciar Sesión</GradientTitle>
-        <form className="flex flex-col space-y-3">
-          <Input type="email" placeholder="Correo electrónico" />
-          <Input type="password" placeholder="Contraseña" />
+        <form
+          className="flex flex-col space-y-3"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const email = e.target.email.value;
+            const password = e.target.password.value;
+            try {
+              const { data, error } = await supabase
+                .from("users")
+                .select("*")
+                .eq("email", email)
+                .eq("password", password)
+                .single();
+              if (error || !data) {
+                alert("❌ Correo o contraseña incorrectos");
+                return;
+              }
+              localStorage.setItem("user", JSON.stringify(data));
+              setUser(data);
+              alert(`✅ Bienvenido, ${data.name || "jugador"}`);
+              setLoginOpen(false);
+            } catch (err) {
+              console.error("Error al verificar login:", err);
+              alert("⚠️ Error al iniciar sesión. Intenta nuevamente.");
+            }
+          }}
+        >
+          <Input type="email" name="email" placeholder="Correo electrónico" required />
+          <Input type="password" name="password" placeholder="Contraseña" required />
           <motion.button
+            type="submit"
             className="text-black py-2 rounded-md font-bold uppercase tracking-wide"
             style={buttonStyle}
             whileHover={{ scale: 1.05 }}
           >
             Entrar
           </motion.button>
-          <button className="text-sm text-[#7dffb2] hover:text-[#00ffff]">
-            ¿Olvidaste tu contraseña?
-          </button>
         </form>
       </Modal>
 
-      {/* --- Modal Registro --- */}
       <Modal open={registerOpen} onClose={() => setRegisterOpen(false)}>
-        <GradientTitle>Crear Cuenta</GradientTitle>
-        <form className="flex flex-col space-y-3">
-          <Input type="text" placeholder="Nombre completo" />
-          <Input type="email" placeholder="Correo electrónico" />
-          <Input type="password" placeholder="Contraseña" />
+        <GradientTitle>Registro</GradientTitle>
+        <form
+          className="flex flex-col space-y-3"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const name = e.target.name.value;
+            const email = e.target.email.value;
+            const password = e.target.password.value;
+            const createdAt = new Date().toISOString();
+
+            try {
+              const { data, error } = await supabase
+                .from("users")
+                .insert([{ name, email, password, created_at: createdAt }])
+                .select()
+                .single();
+
+              if (error) {
+                console.error("Error al registrar:", error);
+                alert("⚠️ Error al registrar usuario");
+                return;
+              }
+
+              alert(`✅ Usuario registrado correctamente: ${data.name}`);
+              setRegisterOpen(false);
+            } catch (err) {
+              console.error("Error:", err);
+              alert("⚠️ Error inesperado al registrar");
+            }
+          }}
+        >
+          <Input type="text" name="name" placeholder="Nombre completo" required />
+          <Input type="email" name="email" placeholder="Correo electrónico" required />
+          <Input type="password" name="password" placeholder="Contraseña" required />
           <motion.button
+            type="submit"
             className="text-black py-2 rounded-md font-bold uppercase tracking-wide"
             style={buttonStyle}
             whileHover={{ scale: 1.05 }}
           >
-            Registrar
+            Registrarse
           </motion.button>
         </form>
       </Modal>
 
-      {/* --- Modal Sobre Nosotros --- */}
-      <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} size="w-[600px]">
-        <GradientTitle>Sobre Nosotros</GradientTitle>
-        <div className="space-y-3 text-gray-300 leading-relaxed">
-          <p>
-            Bienvenido a <strong className="text-[#00ffff]">Game Connect</strong>, donde los jugadores y los mundos virtuales se encuentran.
-          </p>
-          <p>
-            Fundada en <strong>2020</strong>, nuestra misión es conectar a los gamers con los títulos más épicos, desde los clásicos hasta los lanzamientos más recientes.
-          </p>
-          <p>
-            💥 <em>Explora. Juega. Conecta.</em>  
-            Porque el juego no termina nunca.
-          </p>
-        </div>
-      </Modal>
+      {/* ✅ MODAL SOBRE NOSOTROS AGREGADO */}
+      <AboutModal 
+        isOpen={aboutOpen} 
+        onClose={() => setAboutOpen(false)} 
+      />
     </>
   );
 }

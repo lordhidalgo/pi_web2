@@ -3,19 +3,24 @@ import React, { useState, useEffect } from "react";
 
 export default function Games() {
   const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/products");
-        const data = await response.json();
-        setProducts(data);
-      } catch (err) {
-        console.error("Error al obtener productos:", err);
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("https://pi-backend2-go2o.onrender.com/api/products");
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
-    fetchProducts();
-  }, []);
+      
+      const data = await response.json();
+      setProducts(data);
+    } catch (err) {
+      console.error("Error al obtener productos:", err);
+    }
+  };
+
+  fetchProducts();
+}, []);
 
   return (
     <div className="min-h-screen bg-[#06141B] text-white">
