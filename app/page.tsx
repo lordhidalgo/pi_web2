@@ -91,7 +91,7 @@ export default function Page() {
       <div className="w-full h-1 bg-gradient-to-r from-fuchsia-500 via-purple-400 to-fuchsia-500 animate-pulse shadow-[0_0_25px_rgba(255,0,255,0.7)]"></div>
 
       {/* 💬 Preguntas Frecuentes */}
-      <section className="relative w-full py-1 bg-[#0a001a]">
+      <section className="relative w-full py-1 bg-[#0a001a] mb-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,0,255,0.15),transparent_80%)] animate-pulse" />
         <FAQSection />
       </section>
